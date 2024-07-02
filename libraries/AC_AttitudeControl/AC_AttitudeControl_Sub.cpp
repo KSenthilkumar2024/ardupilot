@@ -350,7 +350,7 @@ AC_AttitudeControl_Sub::AC_AttitudeControl_Sub(AP_AHRS_View &ahrs, const AP_Mult
     _p_angle_roll.kIMAX().set_default(AC_ATC_SUB_ANGLE_IMAX);
     _p_angle_pitch.kP().set_default(AC_ATC_SUB_ANGLE_P);
     _p_angle_pitch.kD().set_default(AC_ATC_SUB_ANGLE_D);
-    _p_angle_pitch.k().set_default(AC_ATC_SUB_ANGLE_I);
+    _p_angle_pitch.kI().set_default(AC_ATC_SUB_ANGLE_I);
     _p_angle_pitch.kIMAX().set_default(AC_ATC_SUB_ANGLE_IMAX);
     _p_angle_yaw.kP().set_default(AC_ATC_SUB_ANGLE_P);
     _p_angle_yaw.kD().set_default(AC_ATC_SUB_ANGLE_D);
