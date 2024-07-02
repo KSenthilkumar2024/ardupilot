@@ -9,10 +9,13 @@
 #include <AP_AHRS/AP_AHRS_View.h>
 #include <AP_Motors/AP_Motors.h>
 #include <AC_PID/AC_PID.h>
-#include <AC_PID/AC_P.h>
+#include <AC_PID/AC_PNew.h>
 #include <AP_Vehicle/AP_MultiCopter.h>
 
 #define AC_ATTITUDE_CONTROL_ANGLE_P                     4.5f             // default angle P gain for roll, pitch and yaw
+#define AC_ATTITUDE_CONTROL_ANGLE_I                     0.1f             // default angle I gain for roll, pitch and yaw
+#define AC_ATTITUDE_CONTROL_ANGLE_D                     0.01f            // default angle D gain for roll, pitch and yaw
+#define AC_ATTITUDE_CONTROL_ANGLE_IMAX                  1.0f             // default angle IMAX limit for roll, pitch and yaw
 
 #define AC_ATTITUDE_ACCEL_RP_CONTROLLER_MIN_RADSS       radians(40.0f)   // minimum body-frame acceleration limit for the stability controller (for roll and pitch axis)
 #define AC_ATTITUDE_ACCEL_RP_CONTROLLER_MAX_RADSS       radians(720.0f)  // maximum body-frame acceleration limit for the stability controller (for roll and pitch axis)
@@ -49,9 +52,9 @@ public:
     AC_AttitudeControl( AP_AHRS_View &ahrs,
                         const AP_MultiCopter &aparm,
                         AP_Motors& motors) :
-        _p_angle_roll(AC_ATTITUDE_CONTROL_ANGLE_P),
-        _p_angle_pitch(AC_ATTITUDE_CONTROL_ANGLE_P),
-        _p_angle_yaw(AC_ATTITUDE_CONTROL_ANGLE_P),
+        _p_angle_roll(AC_ATTITUDE_CONTROL_ANGLE_P,AC_ATTITUDE_CONTROL_ANGLE_D,AC_ATTITUDE_CONTROL_ANGLE_I,AC_ATTITUDE_CONTROL_ANGLE_IMAX),
+        _p_angle_pitch(AC_ATTITUDE_CONTROL_ANGLE_P,AC_ATTITUDE_CONTROL_ANGLE_D,AC_ATTITUDE_CONTROL_ANGLE_I,AC_ATTITUDE_CONTROL_ANGLE_IMAX),
+        _p_angle_yaw(AC_ATTITUDE_CONTROL_ANGLE_P,AC_ATTITUDE_CONTROL_ANGLE_D,AC_ATTITUDE_CONTROL_ANGLE_I,AC_ATTITUDE_CONTROL_ANGLE_IMAX),
         _angle_boost(0),
         _use_sqrt_controller(true),
         _throttle_rpy_mix_desired(AC_ATTITUDE_CONTROL_THR_MIX_DEFAULT),
@@ -78,9 +81,9 @@ public:
     float get_dt() const { return _dt; }
 
     // pid accessors
-    AC_P& get_angle_roll_p() { return _p_angle_roll; }
-    AC_P& get_angle_pitch_p() { return _p_angle_pitch; }
-    AC_P& get_angle_yaw_p() { return _p_angle_yaw; }
+    AC_PNew& get_angle_roll_p() { return _p_angle_roll; }
+    AC_PNew& get_angle_pitch_p() { return _p_angle_pitch; }
+    AC_PNew& get_angle_yaw_p() { return _p_angle_yaw; }
     virtual AC_PID& get_rate_roll_pid() = 0;
     virtual AC_PID& get_rate_pitch_pid() = 0;
     virtual AC_PID& get_rate_yaw_pid() = 0;
@@ -451,9 +454,9 @@ protected:
     AP_Int8             _angle_boost_enabled;
 
     // angle controller P objects
-    AC_P                _p_angle_roll;
-    AC_P                _p_angle_pitch;
-    AC_P                _p_angle_yaw;
+    AC_PNew                _p_angle_roll;
+    AC_PNew                _p_angle_pitch;
+    AC_PNew                _p_angle_yaw;
 
     // Angle limit time constant (to maintain altitude)
     AP_Float            _angle_limit_tc;

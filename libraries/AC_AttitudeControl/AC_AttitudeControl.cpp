@@ -85,7 +85,28 @@ const AP_Param::GroupInfo AC_AttitudeControl::var_info[] = {
     // @Range: 3.000 12.000
     // @Range{Sub}: 0.0 12.000
     // @User: Standard
-    AP_SUBGROUPINFO(_p_angle_roll, "ANG_RLL_", 13, AC_AttitudeControl, AC_P),
+
+    // @Param: ANG_RLL_D
+    // @DisplayName: Roll axis angle controller D gain
+    // @Description: Roll axis angle controller D gain.  Converts the error between the desired roll angle and actual angle to a desired roll rate
+    // @Range: 0.01 5.000
+    // @Range{Sub}: 0.0 5.000
+    // @User: Standard
+    
+    // @Param: ANG_RLL_I
+    // @DisplayName: Roll axis angle controller I gain
+    // @Description: Roll axis angle controller I gain.  Converts the error between the desired roll angle and actual angle to a desired roll rate
+    // @Range: 0.1 5.000
+    // @Range{Sub}: 0.0 5.000
+    // @User: Standard
+
+    // @Param: ANG_RLL_IMAX
+    // @DisplayName: Roll axis angle controller IMAX gain
+    // @Description: Roll axis angle controller IMAX gain.  Converts the error between the desired roll angle and actual angle to a desired roll rate
+    // @Range: 1.0 5.000
+    // @Range{Sub}: 0.0 5.000
+    // @User: Standard
+    AP_SUBGROUPINFO(_p_angle_roll, "ANG_RLL_", 13, AC_AttitudeControl, AC_PNew),
 
     // @Param: ANG_PIT_P
     // @DisplayName: Pitch axis angle controller P gain
@@ -93,7 +114,28 @@ const AP_Param::GroupInfo AC_AttitudeControl::var_info[] = {
     // @Range: 3.000 12.000
     // @Range{Sub}: 0.0 12.000
     // @User: Standard
-    AP_SUBGROUPINFO(_p_angle_pitch, "ANG_PIT_", 14, AC_AttitudeControl, AC_P),
+
+    // @Param: ANG_PIT_D
+    // @DisplayName: Pitch axis angle controller D gain
+    // @Description: Pitch axis angle controller D gain.  Converts the error between the desired pitch angle and actual angle to a desired pitch rate
+    // @Range: 0.01 5.000
+    // @Range{Sub}: 0.0 5.000
+    // @User: Standard
+
+    // @Param: ANG_PIT_I
+    // @DisplayName: Pitch axis angle controller I gain
+    // @Description: Pitch axis angle controller I gain.  Converts the error between the desired pitch angle and actual angle to a desired pitch rate
+    // @Range: 0.1 5.000
+    // @Range{Sub}: 0.0 5.000
+    // @User: Standard
+
+    // @Param: ANG_PIT_IMAX
+    // @DisplayName: Pitch axis angle controller IMAX gain
+    // @Description: Pitch axis angle controller IMAX gain.  Converts the error between the desired pitch angle and actual angle to a desired pitch rate
+    // @Range: 1.0 5.000
+    // @Range{Sub}: 0.0 5.000
+    // @User: Standard
+    AP_SUBGROUPINFO(_p_angle_pitch, "ANG_PIT_", 14, AC_AttitudeControl, AC_PNew),
 
     // @Param: ANG_YAW_P
     // @DisplayName: Yaw axis angle controller P gain
@@ -101,7 +143,28 @@ const AP_Param::GroupInfo AC_AttitudeControl::var_info[] = {
     // @Range: 3.000 12.000
     // @Range{Sub}: 0.0 6.000
     // @User: Standard
-    AP_SUBGROUPINFO(_p_angle_yaw, "ANG_YAW_", 15, AC_AttitudeControl, AC_P),
+
+    // @Param: ANG_YAW_D
+    // @DisplayName: Yaw axis angle controller D gain
+    // @Description: Yaw axis angle controller D gain.  Converts the error between the desired yaw angle and actual angle to a desired yaw rate
+    // @Range: 0.01 5.000
+    // @Range{Sub}: 0.0 6.000
+    // @User: Standard
+
+    // @Param: ANG_YAW_I
+    // @DisplayName: Yaw axis angle controller D gain
+    // @Description: Yaw axis angle controller D gain.  Converts the error between the desired yaw angle and actual angle to a desired yaw rate
+    // @Range: 0.1 5.000
+    // @Range{Sub}: 0.0 6.000
+    // @User: Standard
+
+    // @Param: ANG_YAW_IMAX
+    // @DisplayName: Yaw axis angle controller IMAX gain
+    // @Description: Yaw axis angle controller IMAX gain.  Converts the error between the desired yaw angle and actual angle to a desired yaw rate
+    // @Range: 1.0 5.000
+    // @Range{Sub}: 0.0 6.000
+    // @User: Standard
+    AP_SUBGROUPINFO(_p_angle_yaw, "ANG_YAW_", 15, AC_AttitudeControl, AC_PNew),
 
     // @Param: ANG_LIM_TC
     // @DisplayName: Angle Limit (to maintain altitude) Time Constant
@@ -1121,19 +1184,27 @@ bool AC_AttitudeControl::pre_arm_checks(const char *param_prefix,
                                         char *failure_msg,
                                         const uint8_t failure_msg_len)
 {
-    // validate AC_P members:
+    // validate New members:
     const struct {
         const char *pid_name;
-        AC_P &p;
+        AC_PNew &p;
     } ps[] = {
         { "ANG_PIT", get_angle_pitch_p() },
         { "ANG_RLL", get_angle_roll_p() },
         { "ANG_YAW", get_angle_yaw_p() }
     };
     for (uint8_t i=0; i<ARRAY_SIZE(ps); i++) {
-        // all AC_P's must have a positive P value:
+        // all AC_PNew's must have a positive P value:
         if (!is_positive(ps[i].p.kP())) {
             hal.util->snprintf(failure_msg, failure_msg_len, "%s_%s_P must be > 0", param_prefix, ps[i].pid_name);
+            return false;
+        }
+         if (!is_positive(ps[i].p.kI())) {
+            hal.util->snprintf(failure_msg, failure_msg_len, "%s_%s_I must be > 0", param_prefix, ps[i].pid_name);
+            return false;
+        }
+        if (!is_positive(ps[i].p.kD())) {
+            hal.util->snprintf(failure_msg, failure_msg_len, "%s_%s_D must be > 0", param_prefix, ps[i].pid_name);
             return false;
         }
     }
