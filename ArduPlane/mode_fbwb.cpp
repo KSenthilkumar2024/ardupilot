@@ -3,6 +3,10 @@
 
 bool ModeFBWB::_enter()
 {
+#if AP_LANDINGGEAR_ENABLED
+    plane.g2.landing_gear.deploy_for_landing();
+#endif
+
 #if HAL_SOARING_ENABLED
     // for ArduSoar soaring_controller
     plane.g2.soaring_controller.init_cruising();

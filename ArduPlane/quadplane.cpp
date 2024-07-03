@@ -3650,7 +3650,7 @@ bool QuadPlane::verify_vtol_land(void)
             plane.fence.auto_disable_fence_for_landing();
 #endif
 #if AP_LANDINGGEAR_ENABLED
-            plane.g2.landing_gear.deploy_for_landing();
+            plane.g2.landing_gear.retract_after_takeoff();
 #endif
             last_land_final_agl = plane.relative_ground_altitude(plane.g.rangefinder_landing);
             gcs().send_text(MAV_SEVERITY_INFO,"Land descend started");

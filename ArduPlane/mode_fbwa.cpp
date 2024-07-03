@@ -34,4 +34,7 @@ void ModeFBWA::update()
             }
         }
     }
+#if AP_LANDINGGEAR_ENABLED
+    plane.g2.landing_gear.deploy_for_landing();
+#endif
 }
