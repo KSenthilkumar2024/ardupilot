@@ -934,13 +934,13 @@ void AC_AttitudeControl::input_shaping_rate_predictor(const Vector2f &error_angl
         target_ang_vel.x = input_shaping_angle(wrap_PI(error_angle.x), _input_tc, get_accel_roll_max_radss(), target_ang_vel.x, dt);
         target_ang_vel.y = input_shaping_angle(wrap_PI(error_angle.y), _input_tc, get_accel_pitch_max_radss(), target_ang_vel.y, dt);
     } else {
-        /*const float angleP_roll = _p_angle_roll.kP() * _angle_P_scale.x;
+        const float angleP_roll = _p_angle_roll.kP() * _angle_P_scale.x;
         const float angleP_pitch = _p_angle_pitch.kP() * _angle_P_scale.y;
         target_ang_vel.x = angleP_roll * wrap_PI(error_angle.x);
-        target_ang_vel.y = angleP_pitch * wrap_PI(error_angle.y);*/
+        target_ang_vel.y = angleP_pitch * wrap_PI(error_angle.y);
         
-        target_ang_vel.x = const_cast<AC_PNew&>(_p_angle_roll).update_all(wrap_PI(error_angle.x), 0.0f, dt, false);
-        target_ang_vel.y = const_cast<AC_PNew&>(_p_angle_pitch).update_all(wrap_PI(error_angle.y), 0.0f, dt, false);
+       /* target_ang_vel.x = const_cast<AC_PNew&>(_p_angle_roll).update_all(wrap_PI(error_angle.x), 0.0f, dt, false);
+        target_ang_vel.y = const_cast<AC_PNew&>(_p_angle_pitch).update_all(wrap_PI(error_angle.y), 0.0f, dt, false);*/
     }
     // Limit the angular velocity correction
     Vector3f ang_vel(target_ang_vel.x, target_ang_vel.y, 0.0f);
