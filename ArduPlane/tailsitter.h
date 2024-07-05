@@ -30,9 +30,25 @@ public:
 
     Tailsitter(QuadPlane& _quadplane, AP_MotorsMulticopter*& _motors);
 
+    enum LandingGearStatusCustom {
+        RETRACTED,
+        DEPLOYED
+    };
+
+    // Variable to hold the current status
+    LandingGearStatusCustom landing_gear_status_custom;
+
+    // Function to get the landing gear status
+    LandingGearStatusCustom get_landing_gear_status_custom() const;
+
+    // Function to set the landing gear status
+    void set_landing_gear_status_custom(LandingGearStatusCustom status);
+
     bool enabled() const { return (enable > 0) && setup_complete;}
 
     void setup();
+
+    void update();
 
     // return true when flying a control surface only tailsitter
     bool is_control_surface_tailsitter(void) const;

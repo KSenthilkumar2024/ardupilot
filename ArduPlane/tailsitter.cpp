@@ -192,6 +192,14 @@ static const struct AP_Param::defaults_table_struct defaults_table_tailsitter[] 
     
 };
 
+Tailsitter::LandingGearStatusCustom Tailsitter::get_landing_gear_status_custom() const {
+    return landing_gear_status_custom;
+}
+
+void Tailsitter::set_landing_gear_status_custom(LandingGearStatusCustom status) {
+    landing_gear_status_custom = status;
+}
+
 Tailsitter::Tailsitter(QuadPlane& _quadplane, AP_MotorsMulticopter*& _motors):quadplane(_quadplane),motors(_motors)
 {
     AP_Param::setup_object_defaults(this, var_info);
@@ -512,6 +520,9 @@ void Tailsitter::output(void)
  */
 bool Tailsitter::transition_fw_complete(void)
 {
+   /* #if AP_LANDINGGEAR_ENABLED 
+        plane.g2.landing_gear.deploy_for_landing();  // Assuming a 'deploy' method exists in the landing gear subsystem
+    #endif*/
     if (!plane.arming.is_armed_and_safety_off()) {
         // instant transition when disarmed, no message
         return true;
@@ -554,6 +565,7 @@ bool Tailsitter::transition_vtol_complete(void) const
     const float trans_angle = get_transition_angle_vtol();
     if (labs(plane.ahrs.pitch_sensor) > trans_angle*100) {
         gcs().send_text(MAV_SEVERITY_INFO, "Transition VTOL done");
+        //bool transition_vtol_done = true;
         return true;
     }
     int32_t roll_cd = labs(plane.ahrs.roll_sensor);
@@ -569,6 +581,7 @@ bool Tailsitter::transition_vtol_complete(void) const
         return true;
     }
     return false;
+
 }
 
 // handle different tailsitter input types
@@ -811,9 +824,9 @@ bool Tailsitter::relax_pitch()
 }
 
 /*
-  update for transition from quadplane to fixed wing mode
+update for transition from quadplane to fixed wing mode
  */
-void Tailsitter_Transition::update()
+void Tailsitter_Transition::update(void)
 {
     const uint32_t now = millis();
 
@@ -849,8 +862,8 @@ void Tailsitter_Transition::update()
         plane.nav_roll_cd = 0;
         quadplane.disable_yaw_rate_time_constant();
         quadplane.attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(plane.nav_roll_cd,
-                                                                      plane.nav_pitch_cd,
-                                                                      0);
+                                                                    plane.nav_pitch_cd,
+                                                                    0);
         // set throttle at either hover throttle or current throttle, whichever is higher, through the transition
         quadplane.attitude_control->set_throttle_out(MAX(motors->get_throttle_hover(),quadplane.attitude_control->get_throttle_in()), true, 0);
         quadplane.motors_output();
@@ -1033,5 +1046,52 @@ bool Tailsitter_Transition::allow_weathervane()
 {
     return !tailsitter.in_vtol_transition() && (vtol_limit_start_ms == 0);
 }
+
+void Tailsitter::update() {
+    const float trans_angle = get_transition_angle_vtol();
+    int32_t roll_cd = labs(plane.ahrs.roll_sensor);
+    if (plane.fly_inverted()) {
+        roll_cd = 18000 - roll_cd;
+    }
+    // ... existing code ...
+    /*---------------------------- LANDING GEAR OPERATIONS --------------------------------------------*/
+    if (plane.control_mode == &plane.mode_qloiter ||
+        plane.control_mode == &plane.mode_qacro ||
+        plane.control_mode == &plane.mode_qhover || 
+        plane.control_mode == &plane.mode_qstabilize ||  
+        plane.control_mode == &plane.mode_qautotune) {
+        // Code to retract landing gear, ensure AP_LANDINGGEAR_ENABLED is defined
+        if (get_landing_gear_status_custom() != RETRACTED){
+            if ((labs(plane.ahrs.pitch_sensor) > trans_angle*100) || (roll_cd > MAX(4500, plane.roll_limit_cd + 500)) || (AP_HAL::millis() - transition->vtol_transition_start_ms >  ((trans_angle-(transition->vtol_transition_initial_pitch*0.01f))/transition_rate_vtol)*1500)){
+                #if AP_LANDINGGEAR_ENABLED 
+                    plane.g2.landing_gear.retract_after_takeoff();  // Assuming a 'retract' method exists in the landing gear subsystem
+                    set_landing_gear_status_custom(RETRACTED);
+                #endif
+    } 
+    }
+    } else {
+        if (plane.control_mode == &plane.mode_loiter ||
+            plane.control_mode == &plane.mode_acro || 
+            plane.control_mode == &plane.mode_stabilize || 
+            plane.control_mode == &plane.mode_auto || 
+            plane.control_mode == &plane.mode_circle ||
+            plane.control_mode == &plane.mode_fbwa ||
+            plane.control_mode == &plane.mode_fbwb ||
+            plane.control_mode == &plane.mode_manual ||
+            plane.control_mode == &plane.mode_training ||
+            plane.control_mode == &plane.mode_cruise ||
+            plane.control_mode == &plane.mode_avoidADSB) {
+
+            if (get_landing_gear_status_custom() != DEPLOYED) {
+            // Deploy the landing gear in all other modes
+                #if AP_LANDINGGEAR_ENABLED 
+                plane.g2.landing_gear.deploy_for_landing();  // Assuming a 'deploy' method exists in the landing gear subsystem
+                set_landing_gear_status_custom(DEPLOYED);
+                #endif
+            }
+        }  
+    }
+}
+
 
 #endif  // HAL_QUADPLANE_ENABLED
