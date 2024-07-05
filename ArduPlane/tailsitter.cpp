@@ -1058,8 +1058,7 @@ void Tailsitter::update() {
     if (plane.control_mode == &plane.mode_qloiter ||
         plane.control_mode == &plane.mode_qacro ||
         plane.control_mode == &plane.mode_qhover || 
-        plane.control_mode == &plane.mode_qstabilize ||  
-        plane.control_mode == &plane.mode_qautotune) {
+        plane.control_mode == &plane.mode_qstabilize) {
         // Code to retract landing gear, ensure AP_LANDINGGEAR_ENABLED is defined
         if (get_landing_gear_status_custom() != RETRACTED){
             if ((labs(plane.ahrs.pitch_sensor) > trans_angle*100) || (roll_cd > MAX(4500, plane.roll_limit_cd + 500)) || (AP_HAL::millis() - transition->vtol_transition_start_ms >  ((trans_angle-(transition->vtol_transition_initial_pitch*0.01f))/transition_rate_vtol)*1500)){
@@ -1080,7 +1079,7 @@ void Tailsitter::update() {
             plane.control_mode == &plane.mode_manual ||
             plane.control_mode == &plane.mode_training ||
             plane.control_mode == &plane.mode_cruise ||
-            plane.control_mode == &plane.mode_avoidADSB) {
+            plane.control_mode == &plane.mode_autotune) {
 
             if (get_landing_gear_status_custom() != DEPLOYED) {
             // Deploy the landing gear in all other modes
