@@ -1072,7 +1072,6 @@ void Tailsitter::update() {
         if (plane.control_mode == &plane.mode_loiter ||
             plane.control_mode == &plane.mode_acro || 
             plane.control_mode == &plane.mode_stabilize || 
-            plane.control_mode == &plane.mode_auto || 
             plane.control_mode == &plane.mode_circle ||
             plane.control_mode == &plane.mode_fbwa ||
             plane.control_mode == &plane.mode_fbwb ||
