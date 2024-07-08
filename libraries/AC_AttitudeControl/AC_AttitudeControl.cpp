@@ -106,7 +106,7 @@ const AP_Param::GroupInfo AC_AttitudeControl::var_info[] = {
     // @Range: 1.0 5.000
     // @Range{Sub}: 0.0 5.000
     // @User: Standard
-    AP_SUBGROUPINFO(_p_angle_roll, "ANG_RLL_", 13, AC_AttitudeControl, AC_PNew),
+    AP_SUBGROUPINFO(_p_angle_roll, "ANG_RLL_", 13, AC_AttitudeControl, PIDNew),
 
     // @Param: ANG_PIT_P
     // @DisplayName: Pitch axis angle controller P gain
@@ -135,7 +135,7 @@ const AP_Param::GroupInfo AC_AttitudeControl::var_info[] = {
     // @Range: 1.0 5.000
     // @Range{Sub}: 0.0 5.000
     // @User: Standard
-    AP_SUBGROUPINFO(_p_angle_pitch, "ANG_PIT_", 14, AC_AttitudeControl, AC_PNew),
+    AP_SUBGROUPINFO(_p_angle_pitch, "ANG_PIT_", 14, AC_AttitudeControl, PIDNew),
 
     // @Param: ANG_YAW_P
     // @DisplayName: Yaw axis angle controller P gain
@@ -164,7 +164,7 @@ const AP_Param::GroupInfo AC_AttitudeControl::var_info[] = {
     // @Range: 1.0 5.000
     // @Range{Sub}: 0.0 6.000
     // @User: Standard
-    AP_SUBGROUPINFO(_p_angle_yaw, "ANG_YAW_", 15, AC_AttitudeControl, AC_PNew),
+    AP_SUBGROUPINFO(_p_angle_yaw, "ANG_YAW_", 15, AC_AttitudeControl, PIDNew),
 
     // @Param: ANG_LIM_TC
     // @DisplayName: Angle Limit (to maintain altitude) Time Constant
@@ -1197,14 +1197,14 @@ bool AC_AttitudeControl::pre_arm_checks(const char *param_prefix,
     // validate New members:
     const struct {
         const char *pid_name;
-        AC_PNew &p;
+        PIDNew &p;
     } ps[] = {
         { "ANG_PIT", get_angle_pitch_p() },
         { "ANG_RLL", get_angle_roll_p() },
         { "ANG_YAW", get_angle_yaw_p() }
     };
     for (uint8_t i=0; i<ARRAY_SIZE(ps); i++) {
-        // all AC_PNew's must have a positive P value:
+        // all PIDNew's must have a positive P value:
         if (!is_positive(ps[i].p.kP())) {
             hal.util->snprintf(failure_msg, failure_msg_len, "%s_%s_P must be > 0", param_prefix, ps[i].pid_name);
             return false;
