@@ -344,9 +344,14 @@ AC_AttitudeControl_Sub::AC_AttitudeControl_Sub(AP_AHRS_View &ahrs, const AP_Mult
     AP_Param::setup_object_defaults(this, var_info);
 
     // Sub-specific defaults for parent class
-    _p_angle_roll.set_default(AC_ATC_SUB_ANGLE_P);
+    _p_angle_roll._kp = AC_ATC_SUB_ANGLE_P;
+    _p_angle_roll._ki = AC_ATC_SUB_ANGLE_Is
+    _p_angle_roll._kd = AC_ATC_SUB_ANGLE_D;
+    _p_angle_roll._imax = AC_ATC_SUB_ANGLE_IMAX;
+
+    /*_p_angle_roll.set_default(AC_ATC_SUB_ANGLE_P);
     _p_angle_pitch.set_default(AC_ATC_SUB_ANGLE_P);
-    _p_angle_yaw.set_default(AC_ATC_SUB_ANGLE_P);
+    _p_angle_yaw.set_default(AC_ATC_SUB_ANGLE_P);*/
 
     /* _p_angle_roll.kP().set_default(AC_ATC_SUB_ANGLE_P);
     _p_angle_roll.kD().set_default(AC_ATC_SUB_ANGLE_D);
