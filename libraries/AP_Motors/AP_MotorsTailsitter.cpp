@@ -155,9 +155,9 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     /*------------------------ added for naman------------*/
 
     const float TOLERANCE = 1e-6;
-    if (fabs(pitch_out) > 0.5) {
+    if (abs(pitch_out) > 0.5) {
     // Ensure throttle is not zero using tolerance for comparison
-    if (fabs(throttle_thrust) > TOLERANCE) {
+    if (abs(throttle_thrust) > TOLERANCE) {
         pitch_thrust = (pitch_out * _throttle_hover) / throttle_thrust;
     } else {
         pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
