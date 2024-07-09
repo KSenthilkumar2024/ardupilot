@@ -141,14 +141,32 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   thrust_max;                 // highest motor value
     float   thrust_min;                 // lowest motor value
     float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy
-
+    float    pitch_out;                 // for Naman
     // apply voltage and air pressure compensation
     const float compensation_gain = thr_lin.get_compensation_gain();
     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
-    pitch_thrust = _pitch_in + _pitch_in_ff;
+    //pitch_thrust = _pitch_in + _pitch_in_ff;
+    pitch_out = (_pitch_in + _pitch_in_ff)* compensation_gain; // for Naman
+
     yaw_thrust = _yaw_in + _yaw_in_ff;
     throttle_thrust = get_throttle() * compensation_gain;
     const float max_boost_throttle = _throttle_avg_max * compensation_gain;
+
+    /*------------------------ added for naman------------*/
+
+    const float TOLERANCE = 1e-6;
+    if (fabs(pitch_out) > 0.5) {
+    // Ensure throttle is not zero using tolerance for comparison
+    if (fabs(throttle_thrust) > TOLERANCE) {
+        pitch_thrust = (pitch_out * _throttle_hover) / throttle_thrust;
+    } else {
+        pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
+    }
+    } else {
+    // Default computation for pitch_out if the condition is not met
+    pitch_thrust = pitch_out;
+    }
+    /*------------------------ added for naman------------*/
 
     // never boost above max, derived from throttle mix params
     const float min_throttle_out = MIN(_external_min_throttle, max_boost_throttle);
