@@ -192,13 +192,13 @@ static const struct AP_Param::defaults_table_struct defaults_table_tailsitter[] 
     
 };
 
-Tailsitter::LandingGearStatusCustom Tailsitter::get_landing_gear_status_custom() const {
+/*Tailsitter::LandingGearStatusCustom Tailsitter::get_landing_gear_status_custom() const {
     return landing_gear_status_custom;
 }
 
 void Tailsitter::set_landing_gear_status_custom(LandingGearStatusCustom status) {
     landing_gear_status_custom = status;
-}
+}*/
 
 Tailsitter::Tailsitter(QuadPlane& _quadplane, AP_MotorsMulticopter*& _motors):quadplane(_quadplane),motors(_motors)
 {
@@ -475,6 +475,7 @@ void Tailsitter::output(void)
     bool pitch_lim = _have_elevator && (fabsf(SRV_Channels::get_output_scaled(SRV_Channel::Aux_servo_function_t::k_elevator)) >= SERVO_MAX);
     bool yaw_lim = _have_aileron && (fabsf(SRV_Channels::get_output_scaled(SRV_Channel::Aux_servo_function_t::k_aileron)) >= SERVO_MAX);
 
+/* --------------------- JULY08 -------------------------*/
     // Mix elevons and V-tail, always giving full priority to pitch
     float elevator_mix = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator) * (100.0 - plane.g.mixing_offset) * 0.01 * plane.g.mixing_gain;
     float aileron_mix = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron) * (100.0 + plane.g.mixing_offset) * 0.01 * plane.g.mixing_gain;
@@ -543,11 +544,58 @@ bool Tailsitter::transition_fw_complete(void)
     return false;
 }
 
-
+/*------------ Arpit----------------*/
 /*
   return true when we have completed enough of a transition to switch to VTOL control
  */
 bool Tailsitter::transition_vtol_complete(void) const
+{
+    if (!plane.arming.is_armed_and_safety_off()) {
+        // instant transition when disarmed, no message
+        quadplane.tailsitter.setTailsitterVTOLComp(true);
+        return true;
+    }
+    // for vectored tailsitters at zero pilot throttle
+    if ((quadplane.get_pilot_throttle() < .05f) && _is_vectored) {
+        // if we are not moving (hence on the ground?) or don't know
+        // transition immediately to tilt motors up and prevent prop strikes
+        if (quadplane.ahrs.groundspeed() < 1.0f) {
+            gcs().send_text(MAV_SEVERITY_INFO, "Transition VTOL done, zero throttle");
+            quadplane.tailsitter.setTailsitterVTOLComp(true);
+            return true;
+        }
+    }
+    const float trans_angle = get_transition_angle_vtol();
+    if (labs(plane.ahrs.pitch_sensor) > trans_angle*100) {
+        gcs().send_text(MAV_SEVERITY_INFO, "Transition VTOL done");
+        quadplane.tailsitter.setTailsitterVTOLComp(true);
+        return true;
+    }
+    int32_t roll_cd = labs(plane.ahrs.roll_sensor);
+    if (plane.fly_inverted()) {
+        roll_cd = 18000 - roll_cd;
+    }
+    if (roll_cd > MAX(4500, plane.roll_limit_cd + 500)) {
+        gcs().send_text(MAV_SEVERITY_WARNING, "Transition VTOL done, roll error");
+        quadplane.tailsitter.setTailsitterVTOLComp(true);
+        return true;
+    }
+    if (AP_HAL::millis() - transition->vtol_transition_start_ms >  ((trans_angle-(transition->vtol_transition_initial_pitch*0.01f))/transition_rate_vtol)*1500) {
+        gcs().send_text(MAV_SEVERITY_WARNING, "Transition VTOL done, timeout");
+        quadplane.tailsitter.setTailsitterVTOLComp(true);
+        return true;
+    }
+    quadplane.tailsitter.setTailsitterVTOLComp(false);
+    return false;
+}
+
+void Tailsitter::setTailsitterVTOLComp(bool value) {
+        transitionvtol_comp = value;
+
+    }
+/*------------ Arpit----------------*/
+
+/*bool Tailsitter::transition_vtol_complete(void) const
 {
     if (!plane.arming.is_armed_and_safety_off()) {
         // instant transition when disarmed, no message
@@ -582,7 +630,7 @@ bool Tailsitter::transition_vtol_complete(void) const
     }
     return false;
 
-}
+}*/
 
 // handle different tailsitter input types
 void Tailsitter::check_input(void)
@@ -1047,14 +1095,13 @@ bool Tailsitter_Transition::allow_weathervane()
     return !tailsitter.in_vtol_transition() && (vtol_limit_start_ms == 0);
 }
 
-void Tailsitter::update() {
+/*void Tailsitter::update() {
     const float trans_angle = get_transition_angle_vtol();
     int32_t roll_cd = labs(plane.ahrs.roll_sensor);
     if (plane.fly_inverted()) {
         roll_cd = 18000 - roll_cd;
     }
     // ... existing code ...
-    /*---------------------------- LANDING GEAR OPERATIONS --------------------------------------------*/
     if (plane.control_mode == &plane.mode_qloiter ||
         plane.control_mode == &plane.mode_qacro ||
         plane.control_mode == &plane.mode_qhover || 
@@ -1071,7 +1118,7 @@ void Tailsitter::update() {
     } else {
         if (plane.control_mode == &plane.mode_loiter ||
             plane.control_mode == &plane.mode_acro || 
-            plane.control_mode == &plane.mode_stabilize || 
+            plane.control_mode == &plane.mode_stabilize ||  
             plane.control_mode == &plane.mode_circle ||
             plane.control_mode == &plane.mode_fbwa ||
             plane.control_mode == &plane.mode_fbwb ||
@@ -1089,7 +1136,6 @@ void Tailsitter::update() {
             }
         }  
     }
-}
-
+}*/
 
 #endif  // HAL_QUADPLANE_ENABLED

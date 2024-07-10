@@ -30,25 +30,27 @@ public:
 
     Tailsitter(QuadPlane& _quadplane, AP_MotorsMulticopter*& _motors);
 
-    enum LandingGearStatusCustom {
+    /*enum LandingGearStatusCustom {
         RETRACTED,
         DEPLOYED
-    };
+    };*/
 
     // Variable to hold the current status
-    LandingGearStatusCustom landing_gear_status_custom;
+    //LandingGearStatusCustom landing_gear_status_custom;
 
     // Function to get the landing gear status
-    LandingGearStatusCustom get_landing_gear_status_custom() const;
+    //LandingGearStatusCustom get_landing_gear_status_custom() const;
 
     // Function to set the landing gear status
-    void set_landing_gear_status_custom(LandingGearStatusCustom status);
+   // void set_landing_gear_status_custom(LandingGearStatusCustom status);
 
     bool enabled() const { return (enable > 0) && setup_complete;}
 
     void setup();
 
-    void update();
+    //void update();
+
+    void setTailsitterVTOLComp(bool value);  // Arpit
 
     // return true when flying a control surface only tailsitter
     bool is_control_surface_tailsitter(void) const;
@@ -139,7 +141,7 @@ private:
         float speed_scaler;
         float min_throttle;
     };
-
+    bool transitionvtol_comp;
     // Data to be logged
     struct {
         float throttle_scaler;

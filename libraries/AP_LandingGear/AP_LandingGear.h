@@ -3,6 +3,8 @@
 #pragma once
 
 #include "AP_LandingGear_config.h"
+#include <cstdio>
+
 
 #if AP_LANDINGGEAR_ENABLED
 
@@ -14,6 +16,8 @@
 /// @brief  Class managing the control of landing gear
 class AP_LandingGear {
 public:
+    void new_deploy_landing_gear();
+    void new_retract_landing_gear();
     AP_LandingGear() {
         // setup parameter defaults
         AP_Param::setup_object_defaults(this, var_info);
@@ -85,6 +89,10 @@ public:
     void retract_after_takeoff();
     void deploy_for_landing();
 
+    // Using Public Wrapper
+
+
+
 private:
     // Parameters
     AP_Int8     _enable;
@@ -122,6 +130,7 @@ private:
     
     /// deploy - deploy the landing gear
     void deploy();
+    //GCS_MAVLink& gcs(); 
 
 #if HAL_LOGGING_ENABLED
     // log weight on wheels state

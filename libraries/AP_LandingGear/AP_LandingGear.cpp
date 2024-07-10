@@ -1,3 +1,5 @@
+//#include <cstdio>  // Include this header for vsnprintf
+#include <cstdio>
 #include "AP_LandingGear.h"
 
 #if AP_LANDINGGEAR_ENABLED
@@ -8,18 +10,19 @@
 #include <AP_Logger/AP_Logger.h>
 #include <GCS_MAVLink/GCS.h>
 
+#include <AP_AHRS/AP_AHRS.h>
+
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
 #include <SITL/SITL.h>
 #endif
 
 #if defined(APM_BUILD_TYPE)
-//  - this is just here to encourage the build system to supply the "legacy build defines".  The actual dependecy is in the AP_LandingGear.h and AP_LandingGear_config.h headers
+//  - this is just here to encourage the build system to supply the "legacy build defines". The actual dependency is in the AP_LandingGear.h and AP_LandingGear_config.h headers
 #endif
 
 extern const AP_HAL::HAL& hal;
 
 const AP_Param::GroupInfo AP_LandingGear::var_info[] = {
-
     // 0 and 1 used by previous retract and deploy pwm, now replaced with SERVOn_MIN/MAX/REVERSED
 
     // @Param: ENABLE
@@ -43,7 +46,6 @@ const AP_Param::GroupInfo AP_LandingGear::var_info[] = {
     // @User: Standard
     // @RebootRequired: True
     AP_GROUPINFO("DEPLOY_PIN", 3, AP_LandingGear, _pin_deployed, -1),
-
     // @Param: DEPLOY_POL
     // @DisplayName: Chassis deployment feedback pin polarity
     // @Description: Polarity for feedback pin. If this is 1 then the pin should be high when gear are deployed. If set to 0 then then deployed gear level is low.
@@ -96,34 +98,33 @@ const AP_Param::GroupInfo AP_LandingGear::var_info[] = {
     AP_GROUPEND
 };
 
+
 AP_LandingGear *AP_LandingGear::_singleton;
 
+// Member function definitions...
+
 /// initialise state of landing gear
-void AP_LandingGear::init()
-{
-#if CONFIG_HAL_BOARD == HAL_BOARD_SITL
+void AP_LandingGear::init() {
+    #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
     if (AP::sitl()->wow_pin > 0) {
         _pin_weight_on_wheels.set_and_default(AP::sitl()->wow_pin);
         _pin_weight_on_wheels_polarity.set_and_default(1);
     }
-#endif
+    #endif
 
-    if (!_enable.configured() && (SRV_Channels::function_assigned(SRV_Channel::k_landing_gear_control) || 
+    if (!_enable.configured() && (SRV_Channels::function_assigned(SRV_Channel::k_landing_gear_control) ||
             (_pin_deployed > 0) || (_pin_weight_on_wheels > 0))) {
-        // if not configured set enable param if output servo or sense pins are defined
         _enable.set_and_save(1);
     }
 
     if (_pin_deployed != -1) {
         hal.gpio->pinMode(_pin_deployed, HAL_GPIO_INPUT);
-        // set pullup/pulldown to default to non-deployed state
         hal.gpio->write(_pin_deployed, !_pin_deployed_polarity);
         log_wow_state(wow_state_current);
     }
 
     if (_pin_weight_on_wheels != -1) {
         hal.gpio->pinMode(_pin_weight_on_wheels, HAL_GPIO_INPUT);
-        // set pullup/pulldown to default to flying state
         hal.gpio->write(_pin_weight_on_wheels, !_pin_weight_on_wheels_polarity);
         log_wow_state(wow_state_current);
     }
@@ -131,7 +132,6 @@ void AP_LandingGear::init()
     switch ((enum LandingGearStartupBehaviour)_startup_behaviour.get()) {
         default:
         case LandingGear_Startup_WaitForPilotInput:
-            // do nothing
             break;
         case LandingGear_Startup_Retract:
             retract();
@@ -143,8 +143,7 @@ void AP_LandingGear::init()
 }
 
 /// set landing gear position to retract, deploy or deploy-and-keep-deployed
-void AP_LandingGear::set_position(LandingGearCommand cmd)
-{
+void AP_LandingGear::set_position(LandingGearCommand cmd) {
     switch (cmd) {
         case LandingGear_Retract:
             retract();
@@ -156,50 +155,52 @@ void AP_LandingGear::set_position(LandingGearCommand cmd)
 }
 
 /// deploy - deploy landing gear
-void AP_LandingGear::deploy()
-{
+void AP_LandingGear::deploy() {
     if (!_enable) {
         return;
     }
 
-    // set servo PWM to deployed position
     SRV_Channels::set_output_limit(SRV_Channel::k_landing_gear_control, SRV_Channel::Limit::MAX);
 
-    // send message only if output has been configured
-    if (!_deployed &&
-        SRV_Channels::function_assigned(SRV_Channel::k_landing_gear_control)) {
+    if (!_deployed && SRV_Channels::function_assigned(SRV_Channel::k_landing_gear_control)) {
         gcs().send_text(MAV_SEVERITY_INFO, "LandingGear: DEPLOY");
     }
 
-    // set deployed flag
     _deployed = true;
     _have_changed = true;
     LOGGER_WRITE_EVENT(LogEvent::LANDING_GEAR_DEPLOYED);
 }
 
 /// retract - retract landing gear
-void AP_LandingGear::retract()
-{
+void AP_LandingGear::retract() {
     if (!_enable) {
         return;
     }
 
-    // set servo PWM to retracted position
     SRV_Channels::set_output_limit(SRV_Channel::k_landing_gear_control, SRV_Channel::Limit::MIN);
 
-    // reset deployed flag
     _deployed = false;
     _have_changed = true;
     LOGGER_WRITE_EVENT(LogEvent::LANDING_GEAR_RETRACTED);
 
-    // send message only if output has been configured
     if (SRV_Channels::function_assigned(SRV_Channel::k_landing_gear_control)) {
         gcs().send_text(MAV_SEVERITY_INFO, "LandingGear: RETRACT");
     }
 }
 
-bool AP_LandingGear::deployed()
-{
+void AP_LandingGear::new_retract_landing_gear() {
+    if (_deployed) {
+        retract();
+    }
+}
+
+void AP_LandingGear::new_deploy_landing_gear() {
+    if (!_deployed) {
+        deploy();
+    }
+}
+
+bool AP_LandingGear::deployed() {
     if (_pin_deployed == -1) {
         return _deployed;
     } else {
@@ -207,36 +208,29 @@ bool AP_LandingGear::deployed()
     }
 }
 
-AP_LandingGear::LG_WOW_State AP_LandingGear::get_wow_state()
-{
+AP_LandingGear::LG_WOW_State AP_LandingGear::get_wow_state() {
     return wow_state_current;
 }
 
-AP_LandingGear::LG_LandingGear_State AP_LandingGear::get_state()
-{
+AP_LandingGear::LG_LandingGear_State AP_LandingGear::get_state() {
     return gear_state_current;
 }
 
-uint32_t AP_LandingGear::get_gear_state_duration_ms() const
-{
+uint32_t AP_LandingGear::get_gear_state_duration_ms() const {
     if (last_gear_event_ms == 0) {
         return 0;
     }
-
     return AP_HAL::millis() - last_gear_event_ms;
 }
 
-uint32_t AP_LandingGear::get_wow_state_duration_ms() const
-{
+uint32_t AP_LandingGear::get_wow_state_duration_ms() const {
     if (last_wow_event_ms == 0) {
         return 0;
     }
-
     return AP_HAL::millis() - last_wow_event_ms;
 }
 
-void AP_LandingGear::update(float height_above_ground_m)
-{
+void AP_LandingGear::update(float height_above_ground_m) {
     if (_pin_weight_on_wheels == -1) {
         last_wow_event_ms = 0;
         wow_state_current = LG_WOW_UNKNOWN;
@@ -244,7 +238,6 @@ void AP_LandingGear::update(float height_above_ground_m)
         LG_WOW_State wow_state_new = hal.gpio->read(_pin_weight_on_wheels) == _pin_weight_on_wheels_polarity ? LG_WOW : LG_NO_WOW;
 
         if (wow_state_new != wow_state_current) {
-            // we changed states, lets note the time.
             last_wow_event_ms = AP_HAL::millis();
             log_wow_state(wow_state_new);
         }
@@ -255,89 +248,85 @@ void AP_LandingGear::update(float height_above_ground_m)
     if (_pin_deployed == -1) {
         last_gear_event_ms = 0;
 
-        // If there was no pilot input and state is still unknown - leave it as it is
         if (gear_state_current != LG_UNKNOWN) {
-            gear_state_current = (_deployed == true ? LG_DEPLOYED : LG_RETRACTED);
+            gear_state_current = (_deployed ? LG_DEPLOYED : LG_RETRACTED);
         }
     } else {
         LG_LandingGear_State gear_state_new;
         
         if (_deployed) {
-            gear_state_new = (deployed() == true ? LG_DEPLOYED : LG_DEPLOYING);
+            gear_state_new = (deployed() ? LG_DEPLOYED : LG_DEPLOYING);
         } else {
             gear_state_new = (deployed() == false ? LG_RETRACTED : LG_RETRACTING);
         }
 
         if (gear_state_new != gear_state_current) {
-            // we changed states, lets note the time.
             last_gear_event_ms = AP_HAL::millis();
-            
             log_wow_state(wow_state_current);
         }
 
         gear_state_current = gear_state_new;
     }
 
-    /*
-      check for height based triggering
-     */
     int16_t alt_m = constrain_int16(height_above_ground_m, 0, INT16_MAX);
 
     if (hal.util->get_soft_armed()) {
-        // only do height based triggering when armed
         if ((!_deployed || !_have_changed) &&
             _deploy_alt > 0 &&
             alt_m <= _deploy_alt &&
             _last_height_above_ground > _deploy_alt) {
-            deploy();
+            retract();  // changing for tailsitter
         }
         if ((_deployed || !_have_changed) &&
             _retract_alt > 0 &&
             _retract_alt >= _deploy_alt &&
             alt_m >= _retract_alt &&
             _last_height_above_ground < _retract_alt) {
-            retract();
+            deploy();  // changing for tailsitter
         }
     }
 
     _last_height_above_ground = alt_m;
+
+    // Add pitch angle based logic
+    // float pitch_angle = AP::ahrs().get_pitch();  // Get the pitch angle
+    // if (fabs(pitch_angle) < 0.8) {  // Check if the absolute pitch angle is above 70 degrees
+    //     if (!_deployed) {
+    //         deploy();
+    //     }
+    // } else {
+    //     if (_deployed) {
+    //         retract();
+    //     }
+    // }
 }
 
 #if HAL_LOGGING_ENABLED
-// log weight on wheels state
-void AP_LandingGear::log_wow_state(LG_WOW_State state)
-{
+void AP_LandingGear::log_wow_state(LG_WOW_State state) {
     AP::logger().Write("LGR", "TimeUS,LandingGear,WeightOnWheels", "Qbb",
-                                           AP_HAL::micros64(),
-                                           (int8_t)gear_state_current, (int8_t)state);
+                       AP_HAL::micros64(),
+                       (int8_t)gear_state_current, (int8_t)state);
 }
 #endif
 
-bool AP_LandingGear::check_before_land(void)
-{
-    // If the landing gear state is not known (most probably as it is not used)
+bool AP_LandingGear::check_before_land(void) {
     if (get_state() == LG_UNKNOWN) {
         return true;
     }
 
-    // If the landing gear was not used - return true, otherwise - check for deployed
     return (get_state() == LG_DEPLOYED);
 }
 
-// retract after takeoff if configured via the OPTIONS parameter
-void AP_LandingGear::retract_after_takeoff()
-{
-    if (_options.get() & (uint16_t)Option::RETRACT_AFTER_TAKEOFF) {
-        retract();
+void AP_LandingGear::retract_after_takeoff() {
+    if (_options.get()& (uint16_t)Option::RETRACT_AFTER_TAKEOFF) {
+        deploy();  // changing for tailsitter
     }
 }
 
-// deploy for landing if configured via the OPTIONS parameter
-void AP_LandingGear::deploy_for_landing()
-{
+void AP_LandingGear::deploy_for_landing() {
     if (_options.get() & (uint16_t)Option::DEPLOY_DURING_LANDING) {
-        deploy();
+        retract();  // changing for tailsitter
     }
 }
 
-#endif
+#endif  // AP_LANDINGGEAR_ENABLED
