@@ -166,7 +166,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     // Default computation for pitch_out if the condition is not met
     pitch_thrust = pitch_out;
     }*/
-    itch_thrust = (pitch_out * _throttle_hover) / throttle_thrust;
+    pitch_thrust = (pitch_out * _throttle_hover) / throttle_thrust;
     /*------------------------ added for naman------------*/
 
     // never boost above max, derived from throttle mix params
