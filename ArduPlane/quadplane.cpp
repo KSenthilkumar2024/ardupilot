@@ -3864,12 +3864,11 @@ float QuadPlane::forward_throttle_pct()
 /*
   get weathervaning yaw rate in cd/s
  */
-float QuadPlane::get_weathervane_yaw_rate_cds(void)
+/*float QuadPlane::get_weathervane_yaw_rate_cds(void)
 {
-    /*
-      we only do weathervaning in modes where we are doing VTOL
-      position control.
-    */
+    
+     // we only do weathervaning in modes where we are doing VTOL position control.
+    
     if (!in_vtol_mode() ||
         !transition->allow_weathervane() ||
         !motors->armed() || (motors->get_desired_spool_state() != AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED) ||
@@ -3898,8 +3897,60 @@ float QuadPlane::get_weathervane_yaw_rate_cds(void)
     }
 
     return 0.0;
-}
+}*/
+/*-------------------------- WEATHERVANE --------------------------------------*/
+/*
+  get weathervaning yaw rate in cd/s
+ */
+float QuadPlane::get_weathervane_yaw_rate_cds(void)
+{
+    /*
+      we only do weathervaning in modes where we are doing VTOL
+      position control.
+    */
+    if (!in_vtol_mode() ||
+        !transition->allow_weathervane() ||
+        !motors->armed() || (motors->get_desired_spool_state() != AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED) ||
+        plane.control_mode == &plane.mode_qstabilize ||
+#if QAUTOTUNE_ENABLED
+        plane.control_mode == &plane.mode_qautotune ||
+#endif
+        plane.control_mode == &plane.mode_qhover ||
+        should_relax()
+        ) {
+        // Ensure the weathervane controller is reset to prevent weathervaning from happening outside of the timer
+        weathervane->reset();
+        return 0.0;
+    }
 
+    const bool is_takeoff = in_vtol_auto() && is_vtol_takeoff(plane.mission.get_current_nav_cmd().id);
+
+    float wv_output;
+    float yaw_output = 0.0f;  // Initialize yaw_output
+
+    if (weathervane->get_yaw_out(wv_output,
+                                 plane.channel_rudder->get_control_in(),
+                                 plane.relative_ground_altitude(plane.g.rangefinder_landing),
+                                 pos_control->get_roll_cd(),
+                                 pos_control->get_pitch_cd(),
+                                 is_takeoff,
+                                 in_vtol_land_sequence())) {
+        // ------------------- WEATHER VANE OPTION CHANGE -------------------
+        // To override the weathervane for custom: Check for pilot input
+        if (plane.channel_rudder->get_control_in() != 0 ||
+            plane.channel_pitch->get_control_in() != 0 ||
+            plane.channel_roll->get_control_in() != 0) {
+            // If there is pilot input, prioritize it and use RC inputs
+            yaw_output = plane.channel_rudder->get_control_in();
+        } else {
+            // Use weathervane output
+            yaw_output = wv_output * (1/45.0);
+        }
+    }
+
+    return constrain_float(yaw_output, -100.0, 100.0) * command_model_pilot.get_rate() * 0.5;
+}
+/*--------------------------- WEATHERVANE -----------------------------------*/
 /*
   start guided mode control
  */
