@@ -130,7 +130,15 @@ uint32_t AP_MotorsTailsitter::get_motor_mask()
 
     return motor_mask;
 }
-
+/*--------------- FUNCTION FOR NOMALIZATION -------------------------*/
+float fast_pow_int(float base, int exp) {
+    float result = 1.0;
+    for (int i = 0; i < exp; i++) {
+        result *= base;
+    }
+    return result;
+}
+/*--------------- FUNCTION FOR NOMALIZATION -------------------------*/
 // calculate outputs to the motors
 void AP_MotorsTailsitter::output_armed_stabilizing()
 {
@@ -169,7 +177,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float exponent = 2.0;
 
     // Calculate pitch_thrust with exponent
-    float pitch_thrust_out = pow((pitch_out * _throttle_hover) / throttle_thrust, exponent);
+    float pitch_thrust_out = fast_pow_int((pitch_out * _throttle_hover) / throttle_thrust, exponent);
 
     // Normalize the result between 0 and 1 using sigmoid function
     pitch_thrust = 1 / (1 + exp(-pitch_thrust_out));
