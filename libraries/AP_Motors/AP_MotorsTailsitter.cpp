@@ -131,9 +131,10 @@ uint32_t AP_MotorsTailsitter::get_motor_mask()
     return motor_mask;
 }
 /*--------------- FUNCTION FOR NOMALIZATION -------------------------*/
-float fast_pow_int(float base, int exp) {
+int exponent = 2;
+float fast_pow_int(float base, int exponent) {
     float result = 1.0;
-    for (int i = 0; i < exp; i++) {
+    for (int i = 0; i < exponent; i++) {
         result *= base;
     }
     return result;
