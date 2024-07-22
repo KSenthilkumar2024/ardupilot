@@ -28,6 +28,9 @@ extern const AP_HAL::HAL& hal;
 
 #define SERVO_OUTPUT_RANGE  4500
 
+float sigmoid(float x);
+float normalize_pitch_thrust(float pitch_thrust);
+
 float sigmoid(float x) {
     return 1.0 / (1.0 + exp(-x));
 }
