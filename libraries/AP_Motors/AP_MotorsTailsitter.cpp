@@ -140,14 +140,14 @@ uint32_t AP_MotorsTailsitter::get_motor_mask()
     return motor_mask;
 }
 /*--------------- FUNCTION FOR NOMALIZATION -------------------------*/
-int exponent = 2;
+/*int exponent = 2;
 float fast_pow_int(float base, int exponent) {
     float result = 1.0;
     for (int i = 0; i < exponent; i++) {
         result *= base;
     }
     return result;
-}
+}*/
 /*--------------- FUNCTION FOR NOMALIZATION -------------------------*/
 // calculate outputs to the motors
 void AP_MotorsTailsitter::output_armed_stabilizing()
@@ -184,10 +184,10 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     // On July 2, 2024 Normalization
 
     // Adding exponent with the sigmoid function to normalize the value for the non-linear scale
-    float exponent = 2.0;
+    //float exponent = 2.0;
 
     // Calculate pitch_thrust with exponent
-    float pitch_thrust_out = fast_pow_int((pitch_out * _throttle_hover) / throttle_thrust, exponent);
+    float pitch_thrust_out = (pitch_out * _throttle_hover) / throttle_thrust;
 
     // Normalize the result between 0 and 1 using sigmoid function
     //pitch_thrust = 1 / (1 + exp(-pitch_thrust_out));
