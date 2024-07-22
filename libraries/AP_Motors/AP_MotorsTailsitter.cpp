@@ -36,7 +36,7 @@ float sigmoid(float x) {
 }
 
 // Function to apply sigmoidal normalization to pitch thrust
-float normalize_pitch_thrust(float pitch_thrust) {
+float normalize_pitch_thrust(float pitch_thrust_out) {
     return sigmoid(pitch_thrust);
 }
 
