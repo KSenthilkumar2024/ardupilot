@@ -29,16 +29,16 @@ extern const AP_HAL::HAL& hal;
 #define SERVO_OUTPUT_RANGE  4500
 
 float sigmoid(float x);
-float normalize_pitch_thrust(float pitch_thrust_out);
+//float normalize_pitch_thrust(float pitch_thrust_out);
 
 float sigmoid(float x) {
-    return 1.0f / (1.0f + expf(-x));
+    return 2.0f / (1.0f + expf(-x)) - 1.0f;
 }
 
 // Function to apply sigmoidal normalization to pitch thrust
-float normalize_pitch_thrust(float pitch_thrust_out) {
+/*float normalize_pitch_thrust(float pitch_thrust_out) {
     return sigmoid(pitch_thrust_out);
-}
+}*/
 
 // init
 void AP_MotorsTailsitter::init(motor_frame_class frame_class, motor_frame_type frame_type)
@@ -190,7 +190,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
 
     const float TOLERANCE = 1e-6;
     if (abs(throttle_thrust) > TOLERANCE) {
-        pitch_thrust = normalize_pitch_thrust(pitch_thrust_out);
+        pitch_thrust = sigmoid(pitch_thrust_out);
     } else {
         pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
     }
