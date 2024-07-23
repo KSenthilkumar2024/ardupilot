@@ -174,14 +174,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     const float max_boost_throttle = _throttle_avg_max * compensation_gain;
 
     /*------------------------ added for naman------------*/
-
-    /*const float TOLERANCE = 1e-6;
     // Ensure throttle is not zero using tolerance for comparison
-    /if (abs(throttle_thrust) > TOLERANCE) {
-        pitch_thrust = (pitch_out * _throttle_hover) / throttle_thrust;
-    } else {
-        pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
-    }*/
     /*------------------------ added for naman------------*/ 
 
     // On July 2, 2024 Normalization
@@ -194,7 +187,14 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
 
     // Normalize the result between 0 and 1 using sigmoid function
     //pitch_thrust = 1 / (1 + exp(-pitch_thrust_out));
-    pitch_thrust = normalize_pitch_thrust(pitch_thrust_out);
+
+    const float TOLERANCE = 1e-6;
+    if (abs(throttle_thrust) > TOLERANCE) {
+        pitch_thrust = normalize_pitch_thrust(pitch_thrust_out);
+    } else {
+        pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
+    }
+   // pitch_thrust = normalize_pitch_thrust(pitch_thrust_out);
     
    /*----------------------------    Normalization --------------------------*/
 
