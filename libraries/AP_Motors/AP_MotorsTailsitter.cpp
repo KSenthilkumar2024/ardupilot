@@ -35,7 +35,7 @@ float exponential(float x);  // For Exponent function
     return 2.0 / (1.0 + exp(-x)) - 1.0;
 }*/
 float exponential(float x) {  // For Exponent function
-    return tanh(x);
+    return tanhf(x);
 }
 // Function to apply sigmoidal normalization to pitch thrust
 /*float normalize_pitch_thrust(float pitch_thrust_out) {
