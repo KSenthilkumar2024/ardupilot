@@ -96,6 +96,13 @@ protected:
     // update gains for the angle P down tune type
     void updating_angle_p_down_all(AxisType test_axis) override;
 
+
+     // update gains for the angle D up tune type
+    void updating_angle_d_up_all(AxisType test_axis);     //July 24, 2024
+
+    // update gains for the angle D down tune type
+    void updating_angle_d_down_all(AxisType test_axis);  //July 24, 2024
+
     // update gains for the max gain tune type
     void updating_max_gains_all(AxisType test_axis) override {
         // this should never happen
@@ -115,7 +122,7 @@ protected:
         // this should never happen
         INTERNAL_ERROR(AP_InternalError::error_t::flow_of_control);
     }
-    void Log_Write_AutoTune(uint8_t axis, uint8_t tune_step, float meas_target, float meas_min, float meas_max, float new_gain_rp, float new_gain_rd, float new_gain_sp, float new_ddt);
+    void Log_Write_AutoTune(uint8_t axis, uint8_t tune_step, float meas_target, float meas_min, float meas_max, float new_gain_rp, float new_gain_rd, float new_gain_sp, float new_gain_si, float new_gain_sd,float new_ddt);
     void Log_Write_AutoTuneDetails(float angle_cd, float rate_cds);
 #endif
 
@@ -158,6 +165,17 @@ private:
     // P is increased until we achieve our target within a reasonable time while reducing D if bounce back increases above the threshold
     void updating_rate_p_up_d_down(float &tune_d, float tune_d_min, float tune_d_step_ratio, float &tune_p, float tune_p_min, float tune_p_max, float tune_p_step_ratio, float rate_target, float meas_rate_min, float meas_rate_max);
 
+    /* ----------------------------- for custom controller tuning --- JULY 24, 2024 ------------------------------*/
+    // updating_angle_d_up - increase D and adjust P to optimize the D term for a little bounce back
+    // optimize D term while keeping the maximum just below the target by adjusting P
+    void updating_angle_d_up(float &tune_d, float tune_d_min, float tune_d_max, float tune_d_step_ratio, float &tune_p, float tune_p_min, float tune_p_max, float tune_p_step_ratio, float angle_target, float meas_angle_min, float meas_angle_max);
+
+    // updating_angle_d_down - decrease D and adjust P to optimize the D term for no bounce back
+    // optimize D term while keeping the maximum just below the target by adjusting P
+    void updating_angle_d_down(float &tune_d, float tune_d_min, float tune_d_step_ratio, float &tune_p, float tune_p_min, float tune_p_max, float tune_p_step_ratio, float angle_target, float meas_angle_min, float meas_angle_max);
+
+    /* ----------------------------- for custom controller tuning --- JULY 24, 2024 ------------------------------*/
+
     // updating_angle_p_down - decrease P until we don't reach the target before time out
     // P is decreased to ensure we are not overshooting the target
     void updating_angle_p_down(float &tune_p, float tune_p_min, float tune_p_step_ratio, float angle_target, float meas_angle_max, float meas_rate_min, float meas_rate_max);
@@ -167,7 +185,7 @@ private:
     void updating_angle_p_up(float &tune_p, float tune_p_max, float tune_p_step_ratio, float angle_target, float meas_angle_max, float meas_rate_min, float meas_rate_max);
 
     // report gain formatting helper
-    void report_axis_gains(const char* axis_string, float rate_P, float rate_I, float rate_D, float angle_P, float max_accel) const;
+    void report_axis_gains(const char* axis_string, float rate_P, float rate_I, float rate_D, float angle_P, float max_accel, float angle_I, float angle_D) const;
 
     // parameters
     AP_Int8  axis_bitmask;        // axes to be tuned
