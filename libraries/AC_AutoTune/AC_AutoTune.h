@@ -286,15 +286,15 @@ protected:
     LowPassFilterFloat  rotation_rate_filt;         // filtered rotation rate in radians/second
 
     // backup of currently being tuned parameter values
-    float    orig_roll_rp, orig_roll_ri, orig_roll_rd, orig_roll_rff, orig_roll_fltt, orig_roll_smax, orig_roll_sp, orig_roll_accel;
-    float    orig_pitch_rp, orig_pitch_ri, orig_pitch_rd, orig_pitch_rff, orig_pitch_fltt, orig_pitch_smax, orig_pitch_sp, orig_pitch_accel;
-    float    orig_yaw_rp, orig_yaw_ri, orig_yaw_rd, orig_yaw_rff, orig_yaw_fltt, orig_yaw_smax, orig_yaw_rLPF, orig_yaw_sp, orig_yaw_accel;
+    float    orig_roll_rp, orig_roll_ri, orig_roll_rd, orig_roll_rff, orig_roll_fltt, orig_roll_smax, orig_roll_sp, orig_roll_si, orig_roll_sd, orig_roll_accel;
+    float    orig_pitch_rp, orig_pitch_ri, orig_pitch_rd, orig_pitch_rff, orig_pitch_fltt, orig_pitch_smax, orig_pitch_sp, orig_pitch_si, orig_pitch_sd, orig_pitch_accel;
+    float    orig_yaw_rp, orig_yaw_ri, orig_yaw_rd, orig_yaw_rff, orig_yaw_fltt, orig_yaw_smax, orig_yaw_rLPF, orig_yaw_sp, orig_yaw_si, orig_yaw_sd, orig_yaw_accel;
     bool     orig_bf_feedforward;
 
     // currently being tuned parameter values
-    float    tune_roll_rp, tune_roll_rd, tune_roll_sp, tune_roll_accel;
-    float    tune_pitch_rp, tune_pitch_rd, tune_pitch_sp, tune_pitch_accel;
-    float    tune_yaw_rp, tune_yaw_rLPF, tune_yaw_sp, tune_yaw_accel;
+    float    tune_roll_rp, tune_roll_rd, tune_roll_sp, tune_roll_si, tune_roll_sd, tune_roll_accel;   // For custom controller tuning
+    float    tune_pitch_rp, tune_pitch_rd, tune_pitch_sp, tune_pitch_si, tune_pitch_sd, tune_pitch_accel;  // For custom controller tuning
+    float    tune_yaw_rp, tune_yaw_rLPF, tune_yaw_sp, tune_yaw_si, tune_yaw_sd, tune_yaw_accel;  // For custom controller tuning
     float    tune_roll_rff, tune_pitch_rff, tune_yaw_rd, tune_yaw_rff;
 
     uint32_t announce_time;
