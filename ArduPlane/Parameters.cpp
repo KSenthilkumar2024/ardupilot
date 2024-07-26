@@ -815,7 +815,7 @@ const AP_Param::Info Plane::var_info[] = {
 #endif
     // @Group: Q_A_
     // @Path: ../libraries/AP_Motors/AP_MotorsTailsitter.cpp
-    { "EXPO", (const void *)&plane.quadplane.motors,
+    { "EXPO", (const void *)&plane.quadplane..tailsitter.motors,
       {group_info : AP_MotorsTailsitter::var_info}, AP_PARAM_FLAG_POINTER,
       Parameters::k_param_exponent_power, AP_PARAM_GROUP },
 
