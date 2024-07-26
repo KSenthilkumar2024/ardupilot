@@ -193,7 +193,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     } else {
         pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
     }*/ 
-    float pitch_thrust = pitch_out * powf(_throttle_hover / throttle_thrust, exponent_power); // for exponent July 26, 2024
+    pitch_thrust = pitch_out * powf(_throttle_hover / throttle_thrust, exponent_power); // for exponent July 26, 2024
 
     
    /*----------------------------    Normalization --------------------------*/
