@@ -9,6 +9,7 @@
 /// @class      AP_MotorsTailsitter
 class AP_MotorsTailsitter : public AP_MotorsMulticopter {
 public:
+    AP_Float exponent_power;  // For exponent July 26, 2024
 
     /// Constructor
     AP_MotorsTailsitter(uint16_t speed_hz = AP_MOTORS_SPEED_DEFAULT);
@@ -54,4 +55,6 @@ protected:
     // true if differential thrust is available
     bool _has_diff_thrust;
 
+public:          // for exponent July 26, 2024
+    static const AP_Param::GroupInfo var_info[];  // For exponent JUly 26, 2024
 };

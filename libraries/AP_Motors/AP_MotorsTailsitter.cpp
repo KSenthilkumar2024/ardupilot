@@ -28,19 +28,16 @@ extern const AP_HAL::HAL& hal;
 
 #define SERVO_OUTPUT_RANGE  4500
 
-// float sigmoid(float x);  // For Sigmoid Function
-//float exponential(float x);  // For Exponent function
+const AP_Param::GroupInfo AP_MotorsTailsitter::var_info[] = {  // for exponent July 26, 2024
+    // @Param: EXPO
+    // @DisplayName: Tailsitter vector thrust gain power
+    // @Description: This controls the amount of extra pitch given to the vectored control when at high pitch errors
+    // @Range: 0 4
+    // @Increment: 0.1
+    AP_GROUPINFO("EXPO", 0, AP_MotorsTailsitter, exponent_power, 2.5),
 
-/*float sigmoid(float x) {. // For sigmoid function
-    return 2.0 / (1.0 + exp(-x)) - 1.0;
-}*/
-/*float exponential(float x) {  // For Exponent function
-    return tanhf(x);
-}*/
-// Function to apply sigmoidal normalization to pitch thrust
-/*float normalize_pitch_thrust(float pitch_thrust_out) {
-    return sigmoid(pitch_thrust_out);
-}*/
+     AP_GROUPEND
+};
 
 // init
 void AP_MotorsTailsitter::init(motor_frame_class frame_class, motor_frame_type frame_type)
@@ -189,14 +186,15 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     // Normalize the result between 0 and 1 using sigmoid function
     //pitch_thrust = 1 / (1 + exp(-pitch_thrust_out));
 
-    const float TOLERANCE = 1e-6;
+    /*const float TOLERANCE = 1e-6;          // Till July 25, 2024 
     if (abs(throttle_thrust) > TOLERANCE) {
         float pitch_thrust_out = (pitch_out * _throttle_hover) / throttle_thrust;
         pitch_thrust = tanhf(pitch_thrust_out);
     } else {
         pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
-    }
-   // pitch_thrust = normalize_pitch_thrust(pitch_thrust_out);
+    }*/ 
+    float pitch_thrust = pitch_out * powf(_throttle_hover / throttle_thrust, exponent_power); // for exponent July 26, 2024
+
     
    /*----------------------------    Normalization --------------------------*/
 
