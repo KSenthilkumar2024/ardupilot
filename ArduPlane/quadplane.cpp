@@ -248,7 +248,6 @@ const AP_Param::GroupInfo QuadPlane::var_info[] = {
     // 53: TAILSIT_VFGAIN
     // 54: TAILSIT_VHGAIN
     // 56: TAILSIT_VHPOW
-    // 1450: TAILSIT_EXPO
 
     // @Param: MAV_TYPE
     // @DisplayName: MAVLink type identifier
@@ -616,7 +615,6 @@ const AP_Param::ConversionInfo q_conversion_table[] = {
     { Parameters::k_param_quadplane, 1403,  AP_PARAM_FLOAT, "Q_TAILSIT_DSKLD" },
     { Parameters::k_param_quadplane, 1595,  AP_PARAM_FLOAT, "Q_TAILSIT_RAT_FW" },
     { Parameters::k_param_quadplane, 1659,  AP_PARAM_FLOAT, "Q_TAILSIT_RAT_FW" },
-    { Parameters::k_param_quadplane, 1450,  AP_PARAM_FLOAT, "Q_TAILSIT_EXPO" }, // for exponent July 26, 2024
 
     // tiltrotor params have moved but retain the same names
     { Parameters::k_param_quadplane, 37,  AP_PARAM_INT16,  "Q_TILT_MASK" },
