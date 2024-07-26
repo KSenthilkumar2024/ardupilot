@@ -194,9 +194,10 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
         pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
     }*/ 
     //pitch_thrust = pitch_out * powf(_throttle_hover / throttle_thrust, exponent_power); // for exponent July 26, 2024 uncommand
-    pitch_thrust = pitch_out * _throttle_hover / throttle_thrust; // for exponent July 26, 2024
+    //pitch_thrust = pitch_out * _throttle_hover / throttle_thrust; // for exponent July 26, 2024
 
-    
+    pitch_thrust = pitch_out * powf(_throttle_hover / throttle_thrust, _vect_exponent); // July 25, 2024s
+
    /*----------------------------    Normalization --------------------------*/
 
     // never boost above max, derived from throttle mix params

@@ -5,6 +5,7 @@
 #include "AP_Motors_Class.h"
 #include "AP_Motors_Thrust_Linearization.h"
 
+#define AP_MOTORS_EXPONENT              1.0f    // exponent between hover throttle and throttle
 #define AP_MOTORS_YAW_HEADROOM_DEFAULT  200
 #define AP_MOTORS_THST_EXPO_DEFAULT     0.65f   // set to 0 for linear and 1 for second order approximation
 #define AP_MOTORS_THST_HOVER_DEFAULT    0.35f   // the estimated hover throttle, 0 ~ 1
@@ -175,6 +176,9 @@ protected:
 
     // scaling for booster motor throttle
     AP_Float            _boost_scale;
+
+    // For exponent between hover throttle and throttle
+    AP_Float            _vect_exponent;
 
     // motor output variables
     bool                motor_enabled[AP_MOTORS_MAX_NUM_MOTORS];    // true if motor is enabled

@@ -10,7 +10,7 @@
 class AP_MotorsTailsitter : public AP_MotorsMulticopter {
 public:
     // AP_Float exponent_power;  // For exponent July 26, 2024 uncommand
-
+    AP_MotorsTailsitter();
     /// Constructor
     AP_MotorsTailsitter(uint16_t speed_hz = AP_MOTORS_SPEED_DEFAULT);
 
