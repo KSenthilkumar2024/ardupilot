@@ -28,7 +28,7 @@ extern const AP_HAL::HAL& hal;
 
 #define SERVO_OUTPUT_RANGE  4500
 
-const AP_Param::GroupInfo AP_MotorsTailsitter::var_info[] = {  // for exponent July 26, 2024
+/*const AP_Param::GroupInfo AP_MotorsTailsitter::var_info[] = {  // for exponent July 26, 2024 uncommand
     // @Param: EXPO
     // @DisplayName: Tailsitter vector thrust gain power
     // @Description: This controls the amount of extra pitch given to the vectored control when at high pitch errors
@@ -37,7 +37,7 @@ const AP_Param::GroupInfo AP_MotorsTailsitter::var_info[] = {  // for exponent J
     AP_GROUPINFO("EXPO", 0, AP_MotorsTailsitter, exponent_power, 2.5),
 
      AP_GROUPEND
-};
+};*/
 
 // init
 void AP_MotorsTailsitter::init(motor_frame_class frame_class, motor_frame_type frame_type)
@@ -193,7 +193,8 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     } else {
         pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
     }*/ 
-    pitch_thrust = pitch_out * powf(_throttle_hover / throttle_thrust, exponent_power); // for exponent July 26, 2024
+    //pitch_thrust = pitch_out * powf(_throttle_hover / throttle_thrust, exponent_power); // for exponent July 26, 2024 uncommand
+    pitch_thrust = pitch_out * _throttle_hover / throttle_thrust; // for exponent July 26, 2024
 
     
    /*----------------------------    Normalization --------------------------*/

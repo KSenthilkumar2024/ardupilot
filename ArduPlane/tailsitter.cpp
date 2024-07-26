@@ -55,12 +55,19 @@ const AP_Param::GroupInfo Tailsitter::var_info[] = {
     // 5 was MASK
     // 6 was MASKCH
 
-    // @Param: VFGAIN
+    // @Param: VFGAIN1
     // @DisplayName: Tailsitter vector thrust gain in forward flight
     // @Description: This controls the amount of vectored thrust control used in forward flight for a vectored tailsitter
     // @Range: 0 1
     // @Increment: 0.01
-    AP_GROUPINFO("VFGAIN", 7, Tailsitter, vectored_forward_gain, 0),
+    AP_GROUPINFO("VFGAIN1", 7, Tailsitter, vectored_forward_gain1, 0),
+
+    // @Param: VFGAIN2
+    // @DisplayName: Tailsitter vector thrust gain in forward flight --quadmode
+    // @Description: This controls the amount of vectored thrust control used in forward flight for a vectored tailsitter
+    // @Range: 0 1
+    // @Increment: 0.01
+    AP_GROUPINFO("VFGAIN2", 23, Tailsitter, vectored_forward_gain2, 0),
 
     // @Param: VHGAIN
     // @DisplayName: Tailsitter vector thrust gain in hover
@@ -167,7 +174,7 @@ const AP_Param::GroupInfo Tailsitter::var_info[] = {
 
     AP_GROUPEND
 };
-
+float vectored_forward_gain;
 /*
   defaults for tailsitters
  */
@@ -347,6 +354,12 @@ void Tailsitter::output(void)
             // set AP_MotorsMatrix throttles for forward flight
             motors->output_motor_mask(throttle, motor_mask, plane.rudder_dt);
 
+        if(plane.control_mode == &plane.mode_fbwa || plane.control_mode == &plane.mode_fbwb){
+            vectored_forward_gain = vectored_forward_gain1;
+        }else{
+            vectored_forward_gain = vectored_forward_gain2;
+        }
+        
             // in forward flight: set motor tilt servos and throttles using FW controller
             if (vectored_forward_gain > 0) {
                 // remove scaling from surface speed scaling and apply throttle scaling

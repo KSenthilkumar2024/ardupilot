@@ -813,11 +813,11 @@ const AP_Param::Info Plane::var_info[] = {
       {group_info : AC_AttitudeControl_Multi::var_info}, AP_PARAM_FLAG_POINTER,
       Parameters::k_param_q_attitude_control, AP_PARAM_GROUP },
 #endif
-    // @Group: Q_A_
+    /* // @Group: Q_A_  uncommand
     // @Path: ../libraries/AP_Motors/AP_MotorsTailsitter.cpp
     { "EXPO", (const void *)&plane.quadplane..tailsitter.motors,
       {group_info : AP_MotorsTailsitter::var_info}, AP_PARAM_FLAG_POINTER,
-      Parameters::k_param_exponent_power, AP_PARAM_GROUP },
+      Parameters::k_param_exponent_power, AP_PARAM_GROUP },*/
 
     // @Group: RLL
     // @Path: ../libraries/APM_Control/AP_RollController.cpp
