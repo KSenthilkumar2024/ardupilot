@@ -297,6 +297,22 @@ bool Tailsitter::active(void)
  */
 void Tailsitter::output(void)
 {
+    if(plane.control_mode == &plane.mode_fbwa || plane.control_mode == &plane.mode_fbwb){
+        vectored_forward_gain = vectored_forward_gain1;
+    }else{
+        vectored_forward_gain = vectored_forward_gain2;
+    }
+    
+    if (!enabled() || quadplane.motor_test.running || !quadplane.initialised) {
+        // if motor test is running we don't want to overwrite it with output_motor_mask or motors_output
+        return;
+    }
+     if(plane.control_mode == &plane.mode_fbwa || plane.control_mode == &plane.mode_fbwb){
+            vectored_forward_gain = vectored_forward_gain1;
+    }else{
+            vectored_forward_gain = vectored_forward_gain2;
+    }
+    
     if (!enabled() || quadplane.motor_test.running || !quadplane.initialised) {
         // if motor test is running we don't want to overwrite it with output_motor_mask or motors_output
         return;
@@ -353,12 +369,6 @@ void Tailsitter::output(void)
         if (!quadplane.assisted_flight) {
             // set AP_MotorsMatrix throttles for forward flight
             motors->output_motor_mask(throttle, motor_mask, plane.rudder_dt);
-
-        if(plane.control_mode == &plane.mode_fbwa || plane.control_mode == &plane.mode_fbwb){
-            vectored_forward_gain = vectored_forward_gain1;
-        }else{
-            vectored_forward_gain = vectored_forward_gain2;
-        }
         
             // in forward flight: set motor tilt servos and throttles using FW controller
             if (vectored_forward_gain > 0) {
