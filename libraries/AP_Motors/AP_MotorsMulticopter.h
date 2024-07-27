@@ -178,7 +178,7 @@ protected:
     AP_Float            _boost_scale;
 
     // For exponent between hover throttle and throttle
-    AP_Float            _vect_exponent;
+    AP_Float            _vec_exponent;
 
     // motor output variables
     bool                motor_enabled[AP_MOTORS_MAX_NUM_MOTORS];    // true if motor is enabled

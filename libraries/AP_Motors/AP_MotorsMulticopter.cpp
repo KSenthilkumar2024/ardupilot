@@ -237,7 +237,7 @@ const AP_Param::GroupInfo AP_MotorsMulticopter::var_info[] = {
     // @Range: 0 5
     // @Increment: 1
     // @User: Advanced
-    AP_GROUPINFO("VEXPON", 45, AP_MotorsMulticopter, _vect_exponent, AP_MOTORS_EXPONENT),
+    AP_GROUPINFO("VEXPON", 45, AP_MotorsMulticopter, _vec_exponent, AP_MOTORS_EXPONENT),
 
     AP_GROUPEND
 };
