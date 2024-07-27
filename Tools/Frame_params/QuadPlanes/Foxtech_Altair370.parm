@@ -105,6 +105,7 @@ Q_LOIT_BRK_JERK  500
 # approx expo and hover
 Q_M_THST_EXPO    0.7
 Q_M_THST_HOVER   0.383955
+Q_M_VEXPON  1.0
 
 # adjust transition time
 Q_TRANSITION_MS  3000

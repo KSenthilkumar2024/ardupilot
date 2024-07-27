@@ -571,6 +571,8 @@ static const struct AP_Param::defaults_table_struct defaults_table[] = {
     { "Q_A_ACCEL_R_MAX", 40000 },
     { "Q_A_ACCEL_P_MAX", 40000 },
     { "Q_A_ACCEL_Y_MAX", 10000 },
+
+    { "Q_M_VEXPON",   1.0 }, // Exponent
 };
 
 /*
@@ -605,7 +607,7 @@ const AP_Param::ConversionInfo q_conversion_table[] = {
     { Parameters::k_param_quadplane, 48,  AP_PARAM_INT8,  "Q_TAILSIT_ANGLE" },
     { Parameters::k_param_quadplane, 61,  AP_PARAM_INT8,  "Q_TAILSIT_ANG_VT" },
     { Parameters::k_param_quadplane, 50,  AP_PARAM_INT8,  "Q_TAILSIT_INPUT" },
-    { Parameters::k_param_quadplane, 53,  AP_PARAM_FLOAT, "Q_TAILSIT_VFGAIN1" },
+    { Parameters::k_param_quadplane, 53,  AP_PARAM_FLOAT, "Q_TAILSIT_VFGAIN" },
     //{ Parameters::k_param_quadplane, 1449,  AP_PARAM_FLOAT, "Q_TAILSIT_VFGAIN2" },
     { Parameters::k_param_quadplane, 54,  AP_PARAM_FLOAT, "Q_TAILSIT_VHGAIN" },
     { Parameters::k_param_quadplane, 56,  AP_PARAM_FLOAT, "Q_TAILSIT_VHPOW" },

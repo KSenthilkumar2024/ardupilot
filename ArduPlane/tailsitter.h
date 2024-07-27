@@ -113,8 +113,8 @@ public:
     AP_Float transition_rate_vtol;
     AP_Float transition_throttle_vtol;
     AP_Int8 input_type;
-    AP_Float vectored_forward_gain1;
-    AP_Float vectored_forward_gain2;
+    AP_Float vectored_forward_gain;
+    //AP_Float vectored_forward_gain2;
     AP_Float vectored_hover_gain;
     AP_Float vectored_hover_power;
     AP_Float throttle_scale_max;

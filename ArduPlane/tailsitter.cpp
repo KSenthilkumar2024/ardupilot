@@ -55,12 +55,12 @@ const AP_Param::GroupInfo Tailsitter::var_info[] = {
     // 5 was MASK
     // 6 was MASKCH
 
-    // @Param: VFGAIN1
+    // @Param: VFGAIN
     // @DisplayName: Tailsitter vector thrust gain in forward flight
     // @Description: This controls the amount of vectored thrust control used in forward flight for a vectored tailsitter
     // @Range: 0 1
     // @Increment: 0.01
-    AP_GROUPINFO("VFGAIN1", 7, Tailsitter, vectored_forward_gain1, 0),
+    AP_GROUPINFO("VFGAIN", 7, Tailsitter, vectored_forward_gain, 0),
 
     /*// @Param: VFGAIN2
     // @DisplayName: Tailsitter vector thrust gain in forward flight --quadmode
@@ -366,14 +366,14 @@ void Tailsitter::output(void)
             motors->output_motor_mask(throttle, motor_mask, plane.rudder_dt);
         
             // in forward flight: set motor tilt servos and throttles using FW controller
-            if (vectored_forward_gain1 > 0) {
+            if (vectored_forward_gain > 0) {
                 // remove scaling from surface speed scaling and apply throttle scaling
                 const float scaler = plane.control_mode == &plane.mode_manual?1:(quadplane.FW_vector_throttle_scaling() / plane.get_speed_scaler());
                 // thrust vectoring in fixed wing flight
                 float aileron = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
                 float elevator = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-                tilt_left  = (elevator + aileron) * vectored_forward_gain1 * scaler;
-                tilt_right = (elevator - aileron) * vectored_forward_gain1 * scaler;
+                tilt_left  = (elevator + aileron) * vectored_forward_gain * scaler;
+                tilt_right = (elevator - aileron) * vectored_forward_gain * scaler;
             }
             SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft, tilt_left);
             SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, tilt_right);
