@@ -62,12 +62,12 @@ const AP_Param::GroupInfo Tailsitter::var_info[] = {
     // @Increment: 0.01
     AP_GROUPINFO("VFGAIN1", 7, Tailsitter, vectored_forward_gain1, 0),
 
-    // @Param: VFGAIN2
+    /*// @Param: VFGAIN2
     // @DisplayName: Tailsitter vector thrust gain in forward flight --quadmode
     // @Description: This controls the amount of vectored thrust control used in forward flight for a vectored tailsitter
     // @Range: 0 1
     // @Increment: 0.01
-    AP_GROUPINFO("VFGAIN2", 23, Tailsitter, vectored_forward_gain2, 0),
+    AP_GROUPINFO("VFGAIN2", 23, Tailsitter, vectored_forward_gain2, 0),*/
 
     // @Param: VHGAIN
     // @DisplayName: Tailsitter vector thrust gain in hover
@@ -174,7 +174,7 @@ const AP_Param::GroupInfo Tailsitter::var_info[] = {
 
     AP_GROUPEND
 };
-float vectored_forward_gain;
+//float vectored_forward_gain;
 /*
   defaults for tailsitters
  */
@@ -297,20 +297,15 @@ bool Tailsitter::active(void)
  */
 void Tailsitter::output(void)
 {
-    if(plane.control_mode == &plane.mode_fbwa || plane.control_mode == &plane.mode_fbwb){
+    /*if(plane.control_mode == &plane.mode_fbwa || plane.control_mode == &plane.mode_fbwb){
         vectored_forward_gain = vectored_forward_gain1;
     }else{
         vectored_forward_gain = vectored_forward_gain2;
-    }
+    }*/
     
     if (!enabled() || quadplane.motor_test.running || !quadplane.initialised) {
         // if motor test is running we don't want to overwrite it with output_motor_mask or motors_output
         return;
-    }
-     if(plane.control_mode == &plane.mode_fbwa || plane.control_mode == &plane.mode_fbwb){
-            vectored_forward_gain = vectored_forward_gain1;
-    }else{
-            vectored_forward_gain = vectored_forward_gain2;
     }
     
     if (!enabled() || quadplane.motor_test.running || !quadplane.initialised) {
@@ -371,14 +366,14 @@ void Tailsitter::output(void)
             motors->output_motor_mask(throttle, motor_mask, plane.rudder_dt);
         
             // in forward flight: set motor tilt servos and throttles using FW controller
-            if (vectored_forward_gain > 0) {
+            if (vectored_forward_gain1 > 0) {
                 // remove scaling from surface speed scaling and apply throttle scaling
                 const float scaler = plane.control_mode == &plane.mode_manual?1:(quadplane.FW_vector_throttle_scaling() / plane.get_speed_scaler());
                 // thrust vectoring in fixed wing flight
                 float aileron = SRV_Channels::get_output_scaled(SRV_Channel::k_aileron);
                 float elevator = SRV_Channels::get_output_scaled(SRV_Channel::k_elevator);
-                tilt_left  = (elevator + aileron) * vectored_forward_gain * scaler;
-                tilt_right = (elevator - aileron) * vectored_forward_gain * scaler;
+                tilt_left  = (elevator + aileron) * vectored_forward_gain1 * scaler;
+                tilt_right = (elevator - aileron) * vectored_forward_gain1 * scaler;
             }
             SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorLeft, tilt_left);
             SRV_Channels::set_output_scaled(SRV_Channel::k_tiltMotorRight, tilt_right);

@@ -246,7 +246,7 @@ const AP_Param::GroupInfo QuadPlane::var_info[] = {
     // 51: TAILSIT_MASK
     // 52: TAILSIT_MASKCH
     // 53: TAILSIT_VFGAIN1
-    // 1449: TAILSIT_VFGAIN2
+    /*// 1449: TAILSIT_VFGAIN2*/
     // 54: TAILSIT_VHGAIN
     // 56: TAILSIT_VHPOW
 
@@ -606,7 +606,7 @@ const AP_Param::ConversionInfo q_conversion_table[] = {
     { Parameters::k_param_quadplane, 61,  AP_PARAM_INT8,  "Q_TAILSIT_ANG_VT" },
     { Parameters::k_param_quadplane, 50,  AP_PARAM_INT8,  "Q_TAILSIT_INPUT" },
     { Parameters::k_param_quadplane, 53,  AP_PARAM_FLOAT, "Q_TAILSIT_VFGAIN1" },
-    { Parameters::k_param_quadplane, 1449,  AP_PARAM_FLOAT, "Q_TAILSIT_VFGAIN2" },
+    //{ Parameters::k_param_quadplane, 1449,  AP_PARAM_FLOAT, "Q_TAILSIT_VFGAIN2" },
     { Parameters::k_param_quadplane, 54,  AP_PARAM_FLOAT, "Q_TAILSIT_VHGAIN" },
     { Parameters::k_param_quadplane, 56,  AP_PARAM_FLOAT, "Q_TAILSIT_VHPOW" },
     { Parameters::k_param_quadplane, 251,   AP_PARAM_FLOAT, "Q_TAILSIT_GSCMAX" },
