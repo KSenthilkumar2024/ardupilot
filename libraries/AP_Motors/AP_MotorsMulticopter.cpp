@@ -235,7 +235,6 @@ const AP_Param::GroupInfo AP_MotorsMulticopter::var_info[] = {
     // @DisplayName: EXPONENTIAL SLIDER
     // @Description:  Exponential value can be used to find exponent of  ration between throttlle hover and throttle 
     // @Range: 0 5
-    // @Increment: 1
     // @User: Advanced
     AP_GROUPINFO("VEXPON", 45, AP_MotorsMulticopter, _vec_exponent, AP_MOTORS_EXPONENT),
 
