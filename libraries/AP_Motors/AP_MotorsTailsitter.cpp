@@ -161,14 +161,14 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   thrust_max;                 // highest motor value
     float   thrust_min;                 // lowest motor value
     float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy
-    float   pitch_out= 0.0f;                 // for Naman
-    float   _pitch_adjustment_gain = 0.0f;  // for compensating pitch
+    float   pitch_out = 0.0f;                 // for Naman
+    float   pitch_adjustment_gain = 0.0f;  // for compensating pitch
     // apply voltage and air pressure compensation
-    const float compensation_gain = thr_lin.get_compensation_gain();
+    const float compensation_gain = thr_lin.get_compensation_gain()s
     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
 
-    pitch_thrust = _pitch_in + _pitch_in_ff;  // stock
-    // pitch_out = (_pitch_in + _pitch_in_ff)* compensation_gain; // for Naman
+    //pitch_thrust = _pitch_in + _pitch_in_ff;  // stock
+    pitch_out = _pitch_in + _pitch_in_ff; // for Naman
 
     yaw_thrust = _yaw_in + _yaw_in_ff;
     throttle_thrust = get_throttle() * compensation_gain;
@@ -207,15 +207,15 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
    /*----------------------------    Normalization --------------------------*/
    /* --------------------- FOR COMPENSATING PITCH --------------------------*/
     if (fabsf(pitch_out) >=0.8f){
-        pitch_thrust = pitch_out *_pitch_compensation_gain;
+        pitch_thrust = pitch_out *pitch_compensation_gain;
     }else{
         pitch_thrust = pitch_out; 
     }
     if (pitch_thrust > 1.0f){
-        _pitch_adjustment_gain = fabsf(pitch_thrust - 1.0f);
+        pitch_adjustment_gain = fabsf(pitch_thrust - 1.0f);
         pitch_thrust = 1.0f;
     }else if (pitch_thrust < -1.0f){
-            _pitch_adjustment_gain = fabsf(pitch_thrust + 1.0f);
+            pitch_adjustment_gain = fabsf(pitch_thrust + 1.0f);
             pitch_thrust = -1.0f;
     }
     else{
@@ -248,8 +248,8 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     _thrust_right = throttle_thrust - roll_thrust * 0.5f;*/
 
     // calculate left and right throttle outputs  for compensating pitch
-    _thrust_left  = throttle_thrust + roll_thrust * 0.5f + pitch_thrust * _pitch_adjustment_gain * _pitch_compensation_gain; 
-    _thrust_right = throttle_thrust - roll_thrust * 0.5f - pitch_thrust * _pitch_adjustment_gain * _pitch_compensation_gain;
+    _thrust_left  = throttle_thrust + roll_thrust * 0.5f + pitch_thrust * pitch_adjustment_gain * pitch_compensation_gain; 
+    _thrust_right = throttle_thrust - roll_thrust * 0.5f - pitch_thrust * pitch_adjustment_gain * pitch_compensation_gain;
 
     thrust_max = MAX(_thrust_right,_thrust_left);
     thrust_min = MIN(_thrust_right,_thrust_left);

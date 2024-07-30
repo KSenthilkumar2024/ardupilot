@@ -230,14 +230,6 @@ const AP_Param::GroupInfo AP_MotorsMulticopter::var_info[] = {
     // @Increment: 0.001
     // @User: Advanced
     AP_GROUPINFO("SPOOL_TIM_DN", 44, AP_MotorsMulticopter, _spool_down_time, 0),
-
-    /*// @Param: VEXPON
-    // @DisplayName: EXPONENTIAL SLIDER
-    // @Description:  Exponential value can be used to find exponent of  ration between throttlle hover and throttle 
-    // @Range: 0 5
-    // @User: Advanced
-    AP_GROUPINFO("VEXPON", 45, AP_MotorsMulticopter, _vec_exponent, AP_MOTORS_EXPONENT),*/
-
  
     // @Param: PIT_COMP_GAIN
     // @DisplayName: PITCH COMPENSATION GAIN
@@ -245,10 +237,17 @@ const AP_Param::GroupInfo AP_MotorsMulticopter::var_info[] = {
     // @Range: 0 2
     // @Increment: 1
     // @User: Advanced
-    AP_GROUPINFO("PIT_COMP_GAIN", 45, AP_MotorsMulticopter, _pitch_compensation_gain, AP_MOTORS_PITCHCOMPGAIN),
+    AP_GROUPINFO("PIT_GAIN", 45, AP_MotorsMulticopter, pitch_compensation_gain, AP_MOTORS_PITCHCOMPGAIN),
 
     AP_GROUPEND
 };
+
+/*// @Param: VEXPON
+    // @DisplayName: EXPONENTIAL SLIDER
+    // @Description:  Exponential value can be used to find exponent of  ration between throttlle hover and throttle 
+    // @Range: 0 5
+    // @User: Advanced
+    AP_GROUPINFO("VEXPON", 45, AP_MotorsMulticopter, _vec_exponent, AP_MOTORS_EXPONENT),*/
 
 // Constructor
 AP_MotorsMulticopter::AP_MotorsMulticopter(uint16_t speed_hz) :

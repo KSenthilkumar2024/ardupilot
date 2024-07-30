@@ -182,7 +182,7 @@ protected:
    // AP_Float            _vec_exponent;
 
     // For Compensating Pitch
-    AP_Float           _pitch_compensation_gain;  // For Compensating Pitch
+    AP_Float           pitch_compensation_gain;  // For Compensating Pitch
 
     // motor output variables
     bool                motor_enabled[AP_MOTORS_MAX_NUM_MOTORS];    // true if motor is enabled
