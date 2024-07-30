@@ -164,7 +164,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   pitch_out = 0.0f;                 // for Naman
     float   pitch_adjustment_gain = 0.0f;  // for compensating pitch
     // apply voltage and air pressure compensation
-    const float compensation_gain = thr_lin.get_compensation_gain()s
+    const float compensation_gain = thr_lin.get_compensation_gain();
     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
 
     //pitch_thrust = _pitch_in + _pitch_in_ff;  // stock
