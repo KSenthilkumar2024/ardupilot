@@ -231,7 +231,7 @@ const AP_Param::GroupInfo AP_MotorsMulticopter::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("SPOOL_TIM_DN", 44, AP_MotorsMulticopter, _spool_down_time, 0),
  
-    // @Param: PIT_COMP_GAIN
+    // @Param: PIT_GAIN
     // @DisplayName: PITCH COMPENSATION GAIN
     // @Description:  Tries to limit the range of Pitch between -0.8 t0 0.8. Meanwhile -1.0 to -0.8 and 0.8 to 1.0 Thrust will contribute
     // @Range: 0 2
