@@ -238,6 +238,15 @@ const AP_Param::GroupInfo AP_MotorsMulticopter::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("VEXPON", 45, AP_MotorsMulticopter, _vec_exponent, AP_MOTORS_EXPONENT),
 
+ /*---------------------- FOR COMPENSATING PITCH ---------------------------*/
+    // @Param: PIT_COMP_GAIN
+    // @DisplayName: PITCH COMPENSATION GAIN
+    // @Description:  Tries to limit the range of Pitch between -0.8 t0 0.8. Meanwhile -1.0 to -0.8 and 0.8 to 1.0 Thrust will contribute
+    // @Range: 0 2
+    // @Increment: 1
+    // @User: Advanced
+    AP_GROUPINFO("PIT_COMP_GAIN", 46, AP_MotorsMulticopter, _pitch_compensation_gain, AP_MOTORS_PITCHCOMPGAIN),
+ /*---------------------- FOR COMPENSATING PITCH ---------------------------*/
     AP_GROUPEND
 };
 
