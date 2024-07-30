@@ -215,8 +215,11 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
         _pitch_adjustment_gain = fabsf(pitch_thrust - 1.0f);
         pitch_thrust = 1.0f;
     }else if (pitch_thrust < -1.0f){
-        _pitch_adjustment_gain = fabsf(pitch_thrust + 1.0f);
-        pitch_thrust = -1.0f;
+            _pitch_adjustment_gain = fabsf(pitch_thrust + 1.0f);
+            pitch_thrust = -1.0f;
+    }
+    else{
+        pitch_thrust = pitch_thrust;
     }
     /* --------------------- FOR COMPENSATING PITCH --------------------------*/
 
