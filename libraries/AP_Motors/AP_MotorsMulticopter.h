@@ -5,7 +5,7 @@
 #include "AP_Motors_Class.h"
 #include "AP_Motors_Thrust_Linearization.h"
 
-//#define AP_MOTORS_EXPONENT              0.0f    // exponent between hover throttle and throttle
+#define AP_MOTORS_EXPONENT              0.0f    // exponent between hover throttle and throttle
 #define AP_MOTORS_PITCHCOMPGAIN         1.25    // Compensation gain    FOR COMPENSATING PITCH
 #define AP_MOTORS_YAW_HEADROOM_DEFAULT  200
 #define AP_MOTORS_THST_EXPO_DEFAULT     0.65f   // set to 0 for linear and 1 for second order approximation
