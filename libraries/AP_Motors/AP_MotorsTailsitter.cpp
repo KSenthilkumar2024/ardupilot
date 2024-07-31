@@ -201,22 +201,22 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     /*------------------------------------------ EXPONENT -------------------------*/
     const float TOLERANCE = 1e-6;          // Till July 25, 2024 
     if (abs(throttle_thrust) > TOLERANCE) {
-        pitch_out = pitch_out1 * (powf((_throttle_hover / throttle_thrust), _vec_exponent)); // July 25, 2024s
+        pitch_out = pitch_out1 * pitch_compensation_gain * (powf((_throttle_hover / throttle_thrust), _vec_exponent)); // July 25, 2024s
     } else {
         pitch_out = 0; // Handle the edge case where throttle_thrust is zero
     }
    /*----------------------------    Normalization --------------------------*/
    /* --------------------- FOR COMPENSATING PITCH --------------------------*/
-    if (fabsf(pitch_out) >=0.8f){
+    /*if (fabsf(pitch_out) >=0.8f){
         pitch_thrust = pitch_out *pitch_compensation_gain;
     }else{
         pitch_thrust = pitch_out; 
-    }
-    if (pitch_thrust > 1.0f){
-        pitch_adjustment_gain = fabsf(pitch_thrust - 1.0f);
+    }*/
+    if (pitch_out > 1.0f){
+        pitch_adjustment_gain = fabsf(pitch_out - 1.0f);
         pitch_thrust = 1.0f;
-    }else if (pitch_thrust < -1.0f){
-            pitch_adjustment_gain = fabsf(pitch_thrust + 1.0f);
+    }else if (pitch_out < -1.0f){
+            pitch_adjustment_gain = fabsf(pitch_out + 1.0f);
             pitch_thrust = -1.0f;
     }
     else{
