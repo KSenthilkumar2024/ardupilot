@@ -249,7 +249,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
 
     // calculate left and right throttle outputs  for compensating pitch
     _thrust_left  = throttle_thrust + (roll_thrust * 0.5f) + pitch_thrust * pitch_adjustment_gain * pitch_compensation_gain; 
-    _thrust_right = throttle_thrust - (roll_thrust * 0.5f) + pitch_thrust * pitch_adjustment_gain * pitch_compensation_gain;
+    _thrust_right = throttle_thrust - (roll_thrust * 0.5f) - pitch_thrust * pitch_adjustment_gain * pitch_compensation_gain;
 
     thrust_max = MAX(_thrust_right,_thrust_left);
     thrust_min = MIN(_thrust_right,_thrust_left);
