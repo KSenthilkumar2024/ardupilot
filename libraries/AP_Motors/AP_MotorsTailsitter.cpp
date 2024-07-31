@@ -201,7 +201,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     /*------------------------------------------ EXPONENT -------------------------*/
     const float TOLERANCE = 1e-6;          // Till July 25, 2024 
     if (abs(throttle_thrust) > TOLERANCE) {
-        pitch_out = pitch_out1 * pitch_compensation_gain * (powf((_throttle_hover / throttle_thrust), _vec_exponent)); // July 25, 2024s
+        pitch_out = pitch_out1 * (powf((_throttle_hover / throttle_thrust), _vec_exponent)); // July 25, 2024s
     } else {
         pitch_out = 0; // Handle the edge case where throttle_thrust is zero
     }
@@ -213,10 +213,10 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
         pitch_thrust = pitch_out; 
     }*/
     if (pitch_out > 1.0f){
-        pitch_adjustment_gain = fabsf(pitch_out - 1.0f);
+        pitch_adjustment_gain = fabsf(pitch_out - 1.0f)* pitch_compensation_gain;
         pitch_thrust = 1.0f;
     }else if (pitch_out < -1.0f){
-            pitch_adjustment_gain = fabsf(pitch_out + 1.0f);
+            pitch_adjustment_gain = fabsf(pitch_out + 1.0f)* pitch_compensation_gain;
             pitch_thrust = -1.0f;
     }
     else{
@@ -249,8 +249,8 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     _thrust_right = throttle_thrust - roll_thrust * 0.5f;*/
 
     // calculate left and right throttle outputs  for compensating pitch
-    _thrust_left  = throttle_thrust + (roll_thrust * 0.5f) + pitch_thrust * pitch_adjustment_gain * pitch_compensation_gain; 
-    _thrust_right = throttle_thrust - (roll_thrust * 0.5f) - pitch_thrust * pitch_adjustment_gain * pitch_compensation_gain;
+    _thrust_left  = throttle_thrust + (roll_thrust * 0.5f) + pitch_adjustment_gain * pitch_compensation_gain; 
+    _thrust_right = throttle_thrust - (roll_thrust * 0.5f) + pitch_adjustment_gain * pitch_compensation_gain;
 
     thrust_max = MAX(_thrust_right,_thrust_left);
     thrust_min = MIN(_thrust_right,_thrust_left);
