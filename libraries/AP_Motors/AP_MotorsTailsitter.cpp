@@ -220,7 +220,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
             pitch_thrust = -1.0f;
     }
     else{
-        pitch_thrust = pitch_thrust;
+        pitch_thrust = pitch_out;
     }
     /* --------------------- FOR COMPENSATING PITCH --------------------------*/
 
