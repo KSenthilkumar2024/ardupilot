@@ -179,7 +179,7 @@ protected:
     AP_Float            _boost_scale;
 
     // For exponent between hover throttle and throttle
-   // AP_Float            _vec_exponent;
+    AP_Float            _vec_exponent;
 
     // For Compensating Pitch
     AP_Float           pitch_compensation_gain;  // For Compensating Pitch

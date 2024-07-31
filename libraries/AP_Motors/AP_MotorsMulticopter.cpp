@@ -231,23 +231,25 @@ const AP_Param::GroupInfo AP_MotorsMulticopter::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("SPOOL_TIM_DN", 44, AP_MotorsMulticopter, _spool_down_time, 0),
  
-    // @Param: PIT_GAIN
+    // @Param: CUST_PGAIN
     // @DisplayName: PITCH COMPENSATION GAIN
     // @Description:  Tries to limit the range of Pitch between -0.8 t0 0.8. Meanwhile -1.0 to -0.8 and 0.8 to 1.0 Thrust will contribute
     // @Range: 0 2
     // @Increment: 1
     // @User: Advanced
-    AP_GROUPINFO("PIT_GAIN", 45, AP_MotorsMulticopter, pitch_compensation_gain, AP_MOTORS_PITCHCOMPGAIN),
+    AP_GROUPINFO("CUST_PGAIN", 45, AP_MotorsMulticopter, pitch_compensation_gain, AP_MOTORS_PITCHCOMPGAIN),
 
-    AP_GROUPEND
-};
-
-/*// @Param: VEXPON
+    // @Param: CUST_VEXPO
     // @DisplayName: EXPONENTIAL SLIDER
     // @Description:  Exponential value can be used to find exponent of  ration between throttlle hover and throttle 
     // @Range: 0 5
     // @User: Advanced
-    AP_GROUPINFO("VEXPON", 45, AP_MotorsMulticopter, _vec_exponent, AP_MOTORS_EXPONENT),*/
+    AP_GROUPINFO("CUST_VEXPO", 46, AP_MotorsMulticopter, _vec_exponent, AP_MOTORS_EXPONENT),
+
+
+    AP_GROUPEND
+};
+
 
 // Constructor
 AP_MotorsMulticopter::AP_MotorsMulticopter(uint16_t speed_hz) :

@@ -572,8 +572,8 @@ static const struct AP_Param::defaults_table_struct defaults_table[] = {
     { "Q_A_ACCEL_P_MAX", 40000 },
     { "Q_A_ACCEL_Y_MAX", 10000 },
 
-    //{ "Q_M_VEXPON",   0.0 }, // Exponent
-    { "Q_M_PIT_GAIN", 1.25},       // FOR COMPENSATING PITCH
+    { "Q_M_CUST_VEXPO",   0.0 }, // Exponent
+    { "Q_M_CUST_PGAIN", 1.25},       // FOR COMPENSATING PITCH
 };
 
 /*

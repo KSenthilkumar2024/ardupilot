@@ -161,14 +161,15 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   thrust_max;                 // highest motor value
     float   thrust_min;                 // lowest motor value
     float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy
-    float   pitch_out = 0.0f;                 // for Naman
+    float   pitch_out1 = 0.0f;                 // for Naman
     float   pitch_adjustment_gain = 0.0f;  // for compensating pitch
+    float   pitch_out = 0.0f;
     // apply voltage and air pressure compensation
     const float compensation_gain = thr_lin.get_compensation_gain();
     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
 
     //pitch_thrust = _pitch_in + _pitch_in_ff;  // stock
-    pitch_out = _pitch_in + _pitch_in_ff; // for Naman
+    pitch_out1 = _pitch_in + _pitch_in_ff; // for Naman
 
     yaw_thrust = _yaw_in + _yaw_in_ff;
     throttle_thrust = get_throttle() * compensation_gain;
@@ -198,12 +199,12 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     //pitch_thrust = pitch_out * powf(_throttle_hover / throttle_thrust, exponent_power); // for exponent July 26, 2024 uncommand
     //pitch_thrust = pitch_out * _throttle_hover / throttle_thrust; // for exponent July 26, 2024
     /*------------------------------------------ EXPONENT -------------------------*/
-    /*const float TOLERANCE = 1e-6;          // Till July 25, 2024 
+    const float TOLERANCE = 1e-6;          // Till July 25, 2024 
     if (abs(throttle_thrust) > TOLERANCE) {
-        pitch_thrust = pitch_out * (powf((_throttle_hover / throttle_thrust), _vec_exponent)); // July 25, 2024s
+        pitch_out = pitch_out1 * (powf((_throttle_hover / throttle_thrust), _vec_exponent)); // July 25, 2024s
     } else {
-        pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
-    }*/
+        pitch_out = 0; // Handle the edge case where throttle_thrust is zero
+    }
    /*----------------------------    Normalization --------------------------*/
    /* --------------------- FOR COMPENSATING PITCH --------------------------*/
     if (fabsf(pitch_out) >=0.8f){
