@@ -246,7 +246,14 @@ const AP_Param::GroupInfo AP_MotorsMulticopter::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("CUST_VEXPO", 46, AP_MotorsMulticopter, _vec_exponent, AP_MOTORS_EXPONENT),
 
-
+    // @Param: CUST_PIT_BOOST
+    // @DisplayName: CUSTOM PITCH BOOST GAIN
+    // @Description:  Tries to limit the range of Pitch between -0.8 t0 0.8. One more saturation option.
+    // @Range: 0 3
+    // @Increment: 1
+    // @User: Advanced
+    AP_GROUPINFO("CUST_PIT_BOOST", 47, AP_MotorsMulticopter, _pitch_boost_cust_gain, AP_MOTORS_CUSTPITBOOST),
+    
     AP_GROUPEND
 };
 

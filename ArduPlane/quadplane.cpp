@@ -574,6 +574,7 @@ static const struct AP_Param::defaults_table_struct defaults_table[] = {
 
     { "Q_M_CUST_VEXPO",   0.0 }, // Exponent
     { "Q_M_CUST_PGAIN", 1.25},       // FOR COMPENSATING PITCH
+    { "Q_M_CUST_PIT_BOOST", 1.0},    // Custom Boost gain for pitch 
 };
 
 /*

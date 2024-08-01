@@ -155,7 +155,7 @@ float fast_pow_int(float base, int exponent) {
 void AP_MotorsTailsitter::output_armed_stabilizing()
 {
     float   roll_thrust;                // roll thrust input value, +/- 1.0
-    float   pitch_thrust;               // pitch thrust input value, +/- 1.0
+    float   pitch_thrust = 0.0f;               // pitch thrust input value, +/- 1.0
     float   yaw_thrust;                 // yaw thrust input value, +/- 1.0
     float   throttle_thrust;            // throttle thrust input value, 0.0 - 1.0
     float   thrust_max;                 // highest motor value
@@ -171,7 +171,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     //if (_vec_exponent = 0.0f){
       //  pitch_out1 = _pitch_in + _pitch_in_ff;  // stock code
     //}else{
-        pitch_out1 = _pitch_in + _pitch_in_ff * compensation_gain; // due to incorporation of pitch to throttle
+        pitch_out1 = _pitch_in + _pitch_in_ff // stock ardupilot code
     //}
 
     yaw_thrust = _yaw_in + _yaw_in_ff;
@@ -204,7 +204,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     /*------------------------------------------ EXPONENT -------------------------*/
     const float TOLERANCE = 1e-6;          // Till July 25, 2024 
     if (abs(throttle_thrust) > TOLERANCE) {
-        pitch_out = pitch_out1 * (powf((_throttle_hover / throttle_thrust), _vec_exponent)); // July 25, 2024s
+        pitch_out = pitch_out1 * _pitch_boost_cust_gain * (powf((_throttle_hover / throttle_thrust), _vec_exponent)); // July 25, 2024s
     } else {
         pitch_out = 0; // Handle the edge case where throttle_thrust is zero
     }
@@ -216,10 +216,10 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
         pitch_thrust = pitch_out; 
     }*/
     if (pitch_out > 1.0f){
-        pitch_adjustment_gain = fabsf(pitch_out - 1.0f)* pitch_compensation_gain;
+        pitch_adjustment_gain = fabsf(pitch_out - 1.0f)* compensation_gain;
         pitch_thrust = 1.0f;
     }else if (pitch_out < -1.0f){
-            pitch_adjustment_gain = fabsf(pitch_out + 1.0f)* pitch_compensation_gain;
+            pitch_adjustment_gain = fabsf(pitch_out + 1.0f)* compensation_gain;
             pitch_thrust = -1.0f;
     }
     else{

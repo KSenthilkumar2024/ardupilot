@@ -5,6 +5,7 @@
 #include "AP_Motors_Class.h"
 #include "AP_Motors_Thrust_Linearization.h"
 
+#define AP_MOTORS_CUSTPITBOOST          1.0       // Custom pitch boost gain
 #define AP_MOTORS_EXPONENT              0.0f    // exponent between hover throttle and throttle
 #define AP_MOTORS_PITCHCOMPGAIN         1.25    // Compensation gain    FOR COMPENSATING PITCH
 #define AP_MOTORS_YAW_HEADROOM_DEFAULT  200
@@ -180,6 +181,9 @@ protected:
 
     // For exponent between hover throttle and throttle
     AP_Float            _vec_exponent;
+
+    // For pitch boost custom gain
+    AP_Float            _pitch_boost_cust_gain;
 
     // For Compensating Pitch
     AP_Float           pitch_compensation_gain;  // For Compensating Pitch
