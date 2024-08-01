@@ -88,7 +88,7 @@ Q_M_BAT_VOLT_MAX 50.4
 Q_M_BAT_VOLT_MIN 40
 Q_M_CUST_PGAIN   1.25
 Q_M_CUST_VEXPO  0.0
-Q_M_CUST_PIT_BOOST  1.O   
+Q_M_CUST_PBOOST  1.O   
 
 # soften VTOL position controller
 Q_P_POSXY_P      0.5
