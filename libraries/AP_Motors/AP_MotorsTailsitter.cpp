@@ -167,8 +167,8 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     // apply voltage and air pressure compensation
     const float compensation_gain = thr_lin.get_compensation_gain();
     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
-    
-    if (_vec_exponent = 0){
+
+    if (_vec_exponent = 0.0f){
         pitch_out1 = _pitch_in + _pitch_in_ff;  // stock code
     }else{
         pitch_out1 = _pitch_in + _pitch_in_ff * compensation_gain; // due to incorporation of pitch to throttle
