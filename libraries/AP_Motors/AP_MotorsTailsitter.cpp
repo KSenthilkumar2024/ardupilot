@@ -171,7 +171,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     //if (_vec_exponent = 0.0f){
       //  pitch_out1 = _pitch_in + _pitch_in_ff;  // stock code
     //}else{
-        pitch_out1 = _pitch_in + _pitch_in_ff // stock ardupilot code
+        pitch_out1 = _pitch_in + _pitch_in_ff; // stock ardupilot code
     //}
 
     yaw_thrust = _yaw_in + _yaw_in_ff;
