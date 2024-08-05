@@ -202,12 +202,12 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     //pitch_thrust = pitch_out * powf(_throttle_hover / throttle_thrust, exponent_power); // for exponent July 26, 2024 uncommand
     //pitch_thrust = pitch_out * _throttle_hover / throttle_thrust; // for exponent July 26, 2024
     /*------------------------------------------ EXPONENT -------------------------*/
-    const float TOLERANCE = 1e-6;          // Till July 25, 2024 
+    /*const float TOLERANCE = 1e-6;          // Till July 25, 2024 
     if (abs(throttle_thrust) > TOLERANCE) {
         pitch_out = pitch_out1 * _pitch_boost_cust_gain * (powf((_throttle_hover / throttle_thrust), _vec_exponent)); // July 25, 2024s
     } else {
         pitch_out = 0; // Handle the edge case where throttle_thrust is zero
-    }
+    }*/
    /*----------------------------    Normalization --------------------------*/
    /* --------------------- FOR COMPENSATING PITCH --------------------------*/
     /*if (fabsf(pitch_out) >=0.8f){
@@ -215,7 +215,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     }else{
         pitch_thrust = pitch_out; 
     }*/
-    if (pitch_out > 1.0f){
+    /*if (pitch_out > 1.0f){
         pitch_adjustment_gain = fabsf(pitch_out - 1.0f)* compensation_gain;
         pitch_thrust = 1.0f;
     }else if (pitch_out < -1.0f){
@@ -224,8 +224,26 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     }
     else{
         pitch_thrust = pitch_out;
+    }*/
+    const float TOLERANCE = 1e-6;          // Till July 25, 2024 
+    if (abs(throttle_thrust) > TOLERANCE) {
+        pitch_out = pitch_out1 * _pitch_boost_cust_gain * powf((_throttle_hover / throttle_thrust), _vec_exponent); // July 25, 2024
+    } else {
+        pitch_out = 0.0f; // Handle the edge case where throttle_thrust is zero
     }
-    /* --------------------- FOR COMPENSATING PITCH --------------------------*/
+    
+    if (pitch_out > 1.0f){
+        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain, sqrt(_pitch_compensation_gain)); //New expo is named as _pitch_compensation_gain
+        pitch_thrust = 1.0f;
+    }else if (pitch_out < -1.0f){
+        pitch_adjustment_gain = fabsf(pitch_thrust) * powf(compensation_gain, sqrt(_pitch_compensation_gain));
+        pitch_thrust = -1.0f;
+    }else{
+        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain, sqrt(_pitch_compensation_gain));
+        pitch_thrust = pitch_out;
+    }
+
+    
 
     // never boost above max, derived from throttle mix params
     const float min_throttle_out = MIN(_external_min_throttle, max_boost_throttle);
@@ -252,8 +270,8 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     _thrust_right = throttle_thrust - roll_thrust * 0.5f;*/
 
     // calculate left and right throttle outputs  for compensating pitch
-    _thrust_left  = throttle_thrust + (roll_thrust * 0.5f) + pitch_adjustment_gain * pitch_compensation_gain; 
-    _thrust_right = throttle_thrust - (roll_thrust * 0.5f) + pitch_adjustment_gain * pitch_compensation_gain;
+    _thrust_left  = (throttle_thrust + (roll_thrust * 0.5f)) * pitch_compensation_gain; 
+    _thrust_right = (throttle_thrust - (roll_thrust * 0.5f)) * pitch_compensation_gain;
 
     thrust_max = MAX(_thrust_right,_thrust_left);
     thrust_min = MIN(_thrust_right,_thrust_left);
