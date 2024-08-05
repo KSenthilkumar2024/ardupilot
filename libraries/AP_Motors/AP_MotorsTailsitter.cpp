@@ -233,13 +233,13 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     }
     
     if (pitch_out > 1.0f){
-        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain, sqrt(_pitch_compensation_gain)); //New expo is named as _pitch_compensation_gain
+        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain, sqrtf(_pitch_compensation_gain)); //New expo is named as _pitch_compensation_gain
         pitch_thrust = 1.0f;
     }else if (pitch_out < -1.0f){
-        pitch_adjustment_gain = fabsf(pitch_thrust) * powf(compensation_gain, sqrt(_pitch_compensation_gain));
+        pitch_adjustment_gain = fabsf(pitch_thrust) * powf(compensation_gain, sqrtf(_pitch_compensation_gain));
         pitch_thrust = -1.0f;
     }else{
-        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain, sqrt(_pitch_compensation_gain));
+        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain, sqrtf(_pitch_compensation_gain));
         pitch_thrust = pitch_out;
     }
 
