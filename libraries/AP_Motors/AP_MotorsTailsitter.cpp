@@ -231,15 +231,15 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     } else {
         pitch_out = 0.0f; // Handle the edge case where throttle_thrust is zero
     }
-    
+    float exponen = sqrtf(pitch_compensation_gain);
     if (pitch_out > 1.0f){
-        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain, sqrtf(_pitch_compensation_gain)); //New expo is named as _pitch_compensation_gain
+        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain,exponen); //New expo is named as _pitch_compensation_gain
         pitch_thrust = 1.0f;
     }else if (pitch_out < -1.0f){
-        pitch_adjustment_gain = fabsf(pitch_thrust) * powf(compensation_gain, sqrtf(_pitch_compensation_gain));
+        pitch_adjustment_gain = fabsf(pitch_thrust) * powf(compensation_gain, exponen);
         pitch_thrust = -1.0f;
     }else{
-        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain, sqrtf(_pitch_compensation_gain));
+        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain, exponen);
         pitch_thrust = pitch_out;
     }
 
@@ -270,8 +270,8 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     _thrust_right = throttle_thrust - roll_thrust * 0.5f;*/
 
     // calculate left and right throttle outputs  for compensating pitch
-    _thrust_left  = (throttle_thrust + (roll_thrust * 0.5f)) * pitch_compensation_gain; 
-    _thrust_right = (throttle_thrust - (roll_thrust * 0.5f)) * pitch_compensation_gain;
+    _thrust_left  = (throttle_thrust + (roll_thrust * 0.5f)) * pitch_adjustment_gain; 
+    _thrust_right = (throttle_thrust - (roll_thrust * 0.5f)) * pitch_adjustment_gain;
 
     thrust_max = MAX(_thrust_right,_thrust_left);
     thrust_min = MIN(_thrust_right,_thrust_left);
