@@ -415,6 +415,7 @@ void AP_MotorsMulticopter::Log_Write()
         th_average_max  : _throttle_avg_max,
         th_out          : _throttle_out,
         mot_fail_flags  : (uint8_t)(_thrust_boost | (_thrust_balanced << 1U)),
+        cust_boost      : pitch_adjustment_gain,   //CustomLog
     };
     AP::logger().WriteBlock(&pkt_mot, sizeof(pkt_mot));
 }

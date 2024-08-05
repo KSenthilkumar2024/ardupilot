@@ -658,6 +658,7 @@ struct PACKED log_MotBatt {
     float th_average_max;
     float th_out;
     uint8_t mot_fail_flags;
+    float cust_boost;  //customLog
 };
 
 struct PACKED log_VER {

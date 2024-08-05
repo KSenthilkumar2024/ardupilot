@@ -243,7 +243,6 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
         pitch_thrust = pitch_out;
     }
 
-    
 
     // never boost above max, derived from throttle mix params
     const float min_throttle_out = MIN(_external_min_throttle, max_boost_throttle);
