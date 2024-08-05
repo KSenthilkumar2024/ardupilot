@@ -1211,8 +1211,9 @@ struct PACKED log_VER {
 // @Field: ThrAvMx: Maximum average throttle that can be used to maintain attitude control, derived from throttle mix params
 // @Field: ThrOut: Throttle output
 // @Field: FailFlags: bit 0 motor failed, bit 1 motors balanced, should be 2 in normal flight
+// @Field: CBoost: Boost gain for custom log 
 
-// messages for all boards
+//  messages for all boards
 #define LOG_COMMON_STRUCTURES \
     { LOG_FORMAT_MSG, sizeof(log_Format), \
       "FMT", "BBnNZ",      "Type,Length,Name,Format,Columns", "-b---", "-----" },    \
@@ -1338,7 +1339,7 @@ LOG_STRUCTURE_FROM_AIS \
     { LOG_VER_MSG, sizeof(log_VER), \
       "VER",   "QBHBBBBIZHB", "TimeUS,BT,BST,Maj,Min,Pat,FWT,GH,FWS,APJ,BU", "s----------", "F----------", false }, \
     { LOG_MOTBATT_MSG, sizeof(log_MotBatt), \
-      "MOTB", "QfffffB",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags,CBOOSs", "s------", "F------" , true }
+      "MOTB", "QfffffB",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags,CBoost", "s------", "F------" , true }
 
 // message types 0 to 63 reserved for vehicle specific use
 
