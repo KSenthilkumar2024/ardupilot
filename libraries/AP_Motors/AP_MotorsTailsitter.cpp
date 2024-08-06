@@ -231,12 +231,12 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     //} else {
      //   pitch_out = 0.0f; // Handle the edge case where throttle_thrust is zero
     //}
-    //float exponen = sqrtf(pitch_compensation_gain);
+    float exponen = 1.0/_vec_exponent;
     if (pitch_out > 1.0f){
-        pitch_adjustment_gain = powf(pitch_out,_vec_exponent); //New expo is named as _pitch_compensation_gain
+        pitch_adjustment_gain = powf(pitch_out,exponen); //New expo is named as _pitch_compensation_gain
         pitch_thrust = 1.0f;
     }else if (pitch_out < -1.0f){
-        pitch_adjustment_gain = powf(fabsf(pitch_out), _vec_exponent);
+        pitch_adjustment_gain = powf(fabsf(pitch_out),exponen);
         pitch_thrust = -1.0f;
     }else{
         pitch_adjustment_gain = 1.0; //pitch_thrust * powf(compensation_gain, _vec_exponent);
