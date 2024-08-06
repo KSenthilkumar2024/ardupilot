@@ -100,7 +100,7 @@ public:
         MOTOR_FRAME_TYPE_Y4 = 19, //Y4 Quadrotor frame
     };
 
-
+    float   pitch_adjustment_gain;      // for CustomLog
     // returns a formatted string into buffer, e.g. "QUAD/X"
     void get_frame_and_type_string(char *buffer, uint8_t buflen) const;
 
@@ -329,7 +329,7 @@ protected:
     LowPassFilterFloat  _throttle_slew_filter;      // filter for the output of the throttle slew
     DesiredSpoolState   _spool_desired;             // desired spool state
     SpoolState          _spool_state;               // current spool mode
-    float               pitch_adjustment_gain;      //CustomLog
+    
 
     // mask of what channels need fast output
     uint32_t            _motor_fast_mask;

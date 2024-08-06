@@ -3735,6 +3735,7 @@ void QuadPlane::Log_Write_QControl_Tuning()
         throttle_mix        : attitude_control->get_throttle_mix(),
         transition_state    : transition->get_log_transition_state(),
         assist              : assisted_flight,
+        cust_boost          : motors->pitch_adjustment_gain,            // for customlog
     };
     plane.logger.WriteBlock(&pkt, sizeof(pkt));
 
