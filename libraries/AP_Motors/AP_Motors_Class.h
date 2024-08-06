@@ -100,7 +100,7 @@ public:
         MOTOR_FRAME_TYPE_Y4 = 19, //Y4 Quadrotor frame
     };
 
-    float   pitch_adjustment_gain;      // for CustomLog
+     
     // returns a formatted string into buffer, e.g. "QUAD/X"
     void get_frame_and_type_string(char *buffer, uint8_t buflen) const;
 
