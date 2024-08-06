@@ -225,21 +225,21 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     else{
         pitch_thrust = pitch_out;
     }*/
-    const float TOLERANCE = 1e-6;          // Till July 25, 2024 
-    if (abs(throttle_thrust) > TOLERANCE) {
-        pitch_out = pitch_out1 * _pitch_boost_cust_gain * powf((_throttle_hover / throttle_thrust), _vec_exponent); // July 25, 2024
-    } else {
-        pitch_out = 0.0f; // Handle the edge case where throttle_thrust is zero
-    }
+    //const float TOLERANCE = 1e-6;          // Till July 25, 2024 
+    //if (abs(throttle_thrust) > TOLERANCE) {
+    pitch_out = pitch_out1 * _pitch_boost_cust_gain * powf((_throttle_hover / throttle_thrust), _vec_exponent); // July 25, 2024
+    //} else {
+     //   pitch_out = 0.0f; // Handle the edge case where throttle_thrust is zero
+    //}
     float exponen = sqrtf(pitch_compensation_gain);
     if (pitch_out > 1.0f){
-        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain,exponen); //New expo is named as _pitch_compensation_gain
+        pitch_adjustment_gain = powf(pitch_thrust,_vec_exponent); //New expo is named as _pitch_compensation_gain
         pitch_thrust = 1.0f;
     }else if (pitch_out < -1.0f){
-        pitch_adjustment_gain = fabsf(pitch_thrust) * powf(compensation_gain, exponen);
+        pitch_adjustment_gain = powf(fabsf(pitch_thrust), _vec_exponent);
         pitch_thrust = -1.0f;
     }else{
-        pitch_adjustment_gain = pitch_thrust * powf(compensation_gain, exponen);
+        pitch_adjustment_gain = 1.0; //pitch_thrust * powf(compensation_gain, _vec_exponent);
         pitch_thrust = pitch_out;
     }
 

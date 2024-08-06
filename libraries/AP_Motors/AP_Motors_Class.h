@@ -286,9 +286,9 @@ public:
     };
     bool has_option(MotorOptions option) { return _options.get() & uint8_t(option); }
 
-struct log_QControl_Tuning {
-    float cust_boost;   // for customlog
-}; 
+//struct log_QControl_Tuning {
+  //  float cust_boost;   // for customlog
+ //}; 
 protected:
     // output functions that should be overloaded by child classes
     virtual void        output_armed_stabilizing() = 0;

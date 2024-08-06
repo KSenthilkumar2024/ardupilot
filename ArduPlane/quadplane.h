@@ -158,7 +158,7 @@ public:
         float    throttle_mix;
         uint8_t  transition_state;
         uint8_t  assist;
-        float    cust_boost;       // for customlog
+        //float    cust_boost;       // for customlog
     };
 
     MAV_TYPE get_mav_type(void) const;

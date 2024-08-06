@@ -74,7 +74,7 @@ struct PACKED log_Control_Tuning {
     float    terr_alt;
     int16_t  target_climb_rate;
     int16_t  climb_rate;
-    float    cust_boost;        // for customlog
+    //float    cust_boost;        // for customlog
 };
 
 // Write PID packets
