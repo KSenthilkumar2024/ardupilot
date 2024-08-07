@@ -201,6 +201,19 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     } else {
         pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
     }
+
+    float exponen = 1.0/_vec_exponent;       // New variable for an exponent of parameter
+
+    if (pitch_out > 1.0f){
+        pitch_adjustment_gain =  powf(pitch_out,exponen); //New expo is named as _pitch_compensation_gain
+        pitch_thrust = 1.0f;
+    }else if (pitch_out < -1.0f){
+        pitch_adjustment_gain =   powf(fabsf(pitch_out), exponen);
+        pitch_thrust = -1.0f;
+    }else{
+        pitch_adjustment_gain = 1.0f; //pitch_thrust * powf(pitch_out, exponen);
+        pitch_thrust = pitch_out; 
+    }
    /*----------------------------    Normalization --------------------------*/
 
     // never boost above max, derived from throttle mix params
@@ -224,8 +237,8 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     }
 
     // calculate left and right throttle outputs
-    _thrust_left  = throttle_thrust + roll_thrust * 0.5f;
-    _thrust_right = throttle_thrust - roll_thrust * 0.5f;
+    _thrust_left  = (throttle_thrust + roll_thrust * 0.5f) * pitch_adjustment_gain;
+    _thrust_right = (throttle_thrust - roll_thrust * 0.5f) * pitch_adjustment_gain;
 
     thrust_max = MAX(_thrust_right,_thrust_left);
     thrust_min = MIN(_thrust_right,_thrust_left);
