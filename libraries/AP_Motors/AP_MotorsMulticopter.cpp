@@ -419,6 +419,15 @@ void AP_MotorsMulticopter::Log_Write()
     };
     AP::logger().WriteBlock(&pkt_mot, sizeof(pkt_mot));
 }
+void AP_MotorsMulticopter::Log_Writecustom()   //for custom log writing
+{
+    const struct log_CusBoost pkt_cus {
+        LOG_PACKET_HEADER_INIT(LOG_CUSBOOST_MSG),
+        time_us         : AP_HAL::micros64(),
+        p_boost         : pitch_adjustment_gain,    // for custom Log writing
+    };
+    AP::logger().WriteBlock(&pkt_cus, sizeof(pkt_cus));
+}
 #endif
 
 // convert actuator output (0~1) range to pwm range

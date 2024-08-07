@@ -162,7 +162,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   thrust_min;                 // lowest motor value
     float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy
     float   pitch_out1 = 0.0f;                 // for Naman
-    float   pitch_adjustment_gain = 1.0f;  // for compensating pitch
+    //float   pitch_adjustment_gain = 1.0f;  // for compensating pitch
     float   pitch_out = 0.0f;  
     // apply voltage and air pressure compensation
     const float compensation_gain = thr_lin.get_compensation_gain();
