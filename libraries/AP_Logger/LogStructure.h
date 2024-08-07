@@ -1218,6 +1218,11 @@ struct PACKED log_VER {
 // @Field: ThrOut: Throttle output
 // @Field: FailFlags: bit 0 motor failed, bit 1 motors balanced, should be 2 in normal flight
 
+// @LoggerMessage: CUST
+// @Description: Custom log writing
+// @Field: TimeUS: Time since system startup
+// @Field: CUSTBO: Boost customized gain
+
 //  messages for all boards
 #define LOG_COMMON_STRUCTURES \
     { LOG_FORMAT_MSG, sizeof(log_Format), \
@@ -1346,7 +1351,7 @@ LOG_STRUCTURE_FROM_AIS \
     { LOG_MOTBATT_MSG, sizeof(log_MotBatt), \
       "MOTB", "QfffffB",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags", "s------", "F------" , true }, \
     { LOG_CUSBOOST_MSG, sizeof(log_CusBoost),\
-     "CUST", "QfffffB",  "TimeUS,CUSTBOO", "s------", "F------"}  // for custom log writing
+     "CUST", "QfffffB",  "TimeUS,CUSTBO", "s------", "F------"}  // for custom log writing
 
 
 // message types 0 to 63 reserved for vehicle specific use
