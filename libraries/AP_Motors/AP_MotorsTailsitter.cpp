@@ -162,7 +162,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   thrust_min;                 // lowest motor value
     float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy
     float    pitch_out;                 // for Naman
-    // apply voltage and air pressure compensation
+    float    pitch_adjustment_gain = 1.0f; // apply voltage and air pressure compensation
     const float compensation_gain = thr_lin.get_compensation_gain();
     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
     //pitch_thrust = _pitch_in + _pitch_in_ff;
@@ -205,13 +205,13 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float exponen = 1.0/_vec_exponent;       // New variable for an exponent of parameter
 
     if (pitch_out > 1.0f){
-        float pitch_adjustment_gain =  powf(pitch_out,exponen); //New expo is named as _pitch_compensation_gain
+        pitch_adjustment_gain =  powf(pitch_out,exponen); //New expo is named as _pitch_compensation_gain
         pitch_thrust = 1.0f;
     }else if (pitch_out < -1.0f){
-        float pitch_adjustment_gain =   powf(fabsf(pitch_out), exponen);
+        pitch_adjustment_gain =   powf(fabsf(pitch_out), exponen);
         pitch_thrust = -1.0f;
     }else{
-        float pitch_adjustment_gain = 1.0f; //pitch_thrust * powf(pitch_out, exponen);
+        pitch_adjustment_gain = 1.0f; //pitch_thrust * powf(pitch_out, exponen);
         pitch_thrust = pitch_out; 
     }
    /*----------------------------    Normalization --------------------------*/
