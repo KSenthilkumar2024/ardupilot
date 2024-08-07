@@ -194,15 +194,23 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
         pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
     }*/ 
     //pitch_thrust = pitch_out * powf(_throttle_hover / throttle_thrust, exponent_power); // for exponent July 26, 2024 uncommand
+    
+    float vectexponent = 0.2f;
+    if (_vec_exponent < 0.2f ){
+        vectexponent = 0.2f;
+    }else{
+        vectexponent = _vec_exponent;
+    }
     //pitch_thrust = pitch_out * _throttle_hover / throttle_thrust; // for exponent July 26, 2024
+    
     const float TOLERANCE = 1e-6;          // Till July 25, 2024 
     if (abs(throttle_thrust) > TOLERANCE) {
-        pitch_thrust = pitch_out * (powf((_throttle_hover / throttle_thrust), _vec_exponent)); // July 25, 2024s
+        pitch_thrust = pitch_out * (powf((_throttle_hover / throttle_thrust), vectexponent)); // July 25, 2024s
     } else {
         pitch_thrust = 0; // Handle the edge case where throttle_thrust is zero
     }
 
-    float exponen = 1.0/_vec_exponent;       // New variable for an exponent of parameter
+    float exponen = 1.0/vectexponent;       // New variable for an exponent of parameter
 
     if (pitch_out > 1.0f){
         pitch_adjustment_gain =  powf(pitch_out,exponen); //New expo is named as _pitch_compensation_gain
