@@ -661,6 +661,12 @@ struct PACKED log_MotBatt {
     //float cust_boost;  //customLog
 };
 
+struct PACKED log_CusBoost {
+    LOG_PACKET_HEADER;            // for custom log writing
+    uint64_t time_us;
+    float p_boost;
+};
+
 struct PACKED log_VER {
     LOG_PACKET_HEADER;
     uint64_t time_us;
