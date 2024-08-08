@@ -323,8 +323,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     AP::logger().Write("CUST", "pitch_adjustment_gain", "f",
                                         pitch_adjustment_gain);
 
-    AP::logger().Write("CUST1", "vectexponent", "f",
-                                            vectexponent);
+    //AP::logger().Write("CUST1", "vectexponent", "f",vectexponent);
 }
 
 // output_test_seq - spin a motor at the pwm value specified
