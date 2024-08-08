@@ -24,10 +24,8 @@
 #include <GCS_MAVLink/GCS.h>
 #include <SRV_Channel/SRV_Channel.h>
 #include <AP_Logger/AP_Logger.h>
-#include "AP_Logger/LogStructure.h"
 
 extern const AP_HAL::HAL& hal;
-extern AP_Logger *logger;
 
 #define SERVO_OUTPUT_RANGE  4500
 
