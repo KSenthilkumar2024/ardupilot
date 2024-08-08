@@ -163,7 +163,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   thrust_min;                 // lowest motor value
     float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy
     float   pitch_out1 = 0.0f;                 // for Naman
-    //float   pitch_adjustment_gain = 1.0f;  // for compensating pitch
+    float   pitch_adjustment_gain = 1.0f;  // for compensating pitch
     float   pitch_out = 0.0f;  
     // apply voltage and air pressure compensation
     const float compensation_gain = thr_lin.get_compensation_gain();
@@ -251,8 +251,12 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
         pitch_adjustment_gain = 1.0; //pitch_thrust * powf(compensation_gain, _vec_exponent);
         pitch_thrust = pitch_out;
     }
-    AP::logger().Write("CUST", "Boost_gain", "f",pitch_adjustment_gain);
-    AP::logger().Write("CUST", "Exponent", "f",vectexponent);
+
+    AP::logger().Write("CUST", "pitch_adjustment_gain", "f",
+                                        pitch_adjustment_gain);
+
+    AP::logger().Write("CUST", "vectexponent", "f",
+                                            vectexponent);
 
     // never boost above max, derived from throttle mix params
     const float min_throttle_out = MIN(_external_min_throttle, max_boost_throttle);
