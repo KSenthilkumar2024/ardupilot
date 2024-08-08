@@ -1212,11 +1212,6 @@ struct PACKED log_VER {
 // @Field: ThrOut: Throttle output
 // @Field: FailFlags: bit 0 motor failed, bit 1 motors balanced, should be 2 in normal flight
 
-// @LoggerMessage: CUST
-// @Description: Custom log writing
-// @Field: TimeUS: Time since system startup
-// @Field: CUSTBO: Boost customized gain
-
 //  messages for all boards
 #define LOG_COMMON_STRUCTURES \
     { LOG_FORMAT_MSG, sizeof(log_Format), \
