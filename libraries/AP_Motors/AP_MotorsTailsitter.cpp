@@ -23,6 +23,7 @@
 #include "AP_MotorsTailsitter.h"
 #include <GCS_MAVLink/GCS.h>
 #include <SRV_Channel/SRV_Channel.h>
+#include <AP_Logger/AP_Logger.h>
 
 extern const AP_HAL::HAL& hal;
 
@@ -250,7 +251,8 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
         pitch_adjustment_gain = 1.0; //pitch_thrust * powf(compensation_gain, _vec_exponent);
         pitch_thrust = pitch_out;
     }
-
+    AP::logger().Write("CUST", "Boost_gain", "f",pitch_adjustment_gain);
+    AP::logger().Write("CUST", "Exponent", "f",vectexponent);
 
     // never boost above max, derived from throttle mix params
     const float min_throttle_out = MIN(_external_min_throttle, max_boost_throttle);

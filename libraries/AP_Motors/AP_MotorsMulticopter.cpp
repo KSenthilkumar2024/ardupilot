@@ -417,16 +417,7 @@ void AP_MotorsMulticopter::Log_Write()
         mot_fail_flags  : (uint8_t)(_thrust_boost | (_thrust_balanced << 1U)),
         //cust_boost      : pitch_adjustment_gain,   //CustomLog
     };
-    AP::logger().WriteBlock(&pkt_mot, sizeof(pkt_mot));
-}
-void AP_MotorsMulticopter::Log_Writecustom()   //for custom log writing
-{
-    const struct log_CusBoost pkt_cus {
-        LOG_PACKET_HEADER_INIT(LOG_CUSBOOST_MSG),
-        time_us         : AP_HAL::micros64(),
-        p_boost         : pitch_adjustment_gain,    // for custom Log writing
-    };
-    AP::logger().WriteBlock(&pkt_cus, sizeof(pkt_cus));
+    AP::logger().WriteBlock(&pkt_mot, sizeof(pktsmot));
 }
 #endif
 
