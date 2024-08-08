@@ -24,8 +24,10 @@
 #include <GCS_MAVLink/GCS.h>
 #include <SRV_Channel/SRV_Channel.h>
 #include <AP_Logger/AP_Logger.h>
+#include "AP_Logger/LogStructure.h"
 
 extern const AP_HAL::HAL& hal;
+extern AP_Logger *logger;
 
 #define SERVO_OUTPUT_RANGE  4500
 
@@ -252,11 +254,6 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
         pitch_thrust = pitch_out;
     }
 
-    AP::logger().Write("CUST", "pitch_adjustment_gain", "f",
-                                        pitch_adjustment_gain);
-
-    AP::logger().Write("CUST", "vectexponent", "f",
-                                            vectexponent);
 
     // never boost above max, derived from throttle mix params
     const float min_throttle_out = MIN(_external_min_throttle, max_boost_throttle);
@@ -324,6 +321,12 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     // thrust vectoring
     _tilt_left  = pitch_thrust - yaw_thrust;
     _tilt_right = pitch_thrust + yaw_thrust;
+
+    AP::logger().Write("CUST", "pitch_adjustment_gain", "f",
+                                        pitch_adjustment_gain);
+
+    AP::logger().Write("CUST", "vectexponent", "f",
+                                            vectexponent);
 }
 
 // output_test_seq - spin a motor at the pwm value specified
