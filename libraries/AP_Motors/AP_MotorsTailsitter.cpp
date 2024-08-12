@@ -226,12 +226,12 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     else{
         pitch_thrust = pitch_out;
     }*/
-    float vectexponent = 0.2f;            // for limiting the inverse exponent
-    if (_vec_exponent < 0.2f ){
+    float vectexponent = _vec_exponent;            // for limiting the inverse exponent
+    /*if (_vec_exponent < 0.2f ){
         vectexponent = 0.2f;
     }else{
         vectexponent = _vec_exponent;
-    }
+    }*/
 
     const float TOLERANCE = 1e-6;          // Till July 25, 2024 
     if (abs(throttle_thrust) > TOLERANCE) {
@@ -245,7 +245,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
         pitch_adjustment_gain = powf(pitch_out,vectexponent); //New expo is named as _pitch_compensation_gain
         pitch_thrust = 1.0f;
     }else if (pitch_out < -1.0f){
-        pitch_adjustment_gain = powf(fabsf(pitch_out),vectexponent);
+        pitch_adjustment_gain = powf(pitch_out,vectexponent);
         pitch_thrust = -1.0f;
     }else{
         pitch_adjustment_gain = 1.0; //pitch_thrust * powf(compensation_gain, _vec_exponent);
