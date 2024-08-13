@@ -52,6 +52,7 @@ protected:
     float pitch_thrust; // -1..1  
     float yaw_thrust; // -1..1
     float pitch_adjustment_gain; // 0..1  //structurelog
+    
 
     // Set by tailsitters using diskloading minumum outflow velocity limit
     float _external_min_throttle;

@@ -157,9 +157,9 @@ float fast_pow_int(float base, int exponent) {
 // calculate outputs to the motors
 void AP_MotorsTailsitter::output_armed_stabilizing()
 {
-    float   roll_thrust;                // roll thrust input value, +/- 1.0
-    float   pitch_thrust;               // pitch thrust input value, +/- 1.0
-    float   yaw_thrust;                 // yaw thrust input value, +/- 1.0
+    //float   roll_thrust;                // roll thrust input value, +/- 1.0
+    //float   pitch_thrust;               // pitch thrust input value, +/- 1.0
+    //float   yaw_thrust;                 // yaw thrust input value, +/- 1.0
     float   throttle_thrust;            // throttle thrust input value, 0.0 - 1.0
     float   thrust_max;                 // highest motor value
     float   thrust_min;                 // lowest motor value
