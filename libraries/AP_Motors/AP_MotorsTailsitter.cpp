@@ -164,8 +164,8 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   thrust_max;                 // highest motor value
     float   thrust_min;                 // lowest motor value
     float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy
-    float    pitch_out;                 // for Naman
-    float    pitch_adjustment_gain = 1.0f; // apply voltage and air pressure compensation
+    float    pitch_out;                 // for
+    //float    pitch_adjustment_gain = 1.0f; //logstructure
     const float compensation_gain = thr_lin.get_compensation_gain();
     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
     //pitch_thrust = _pitch_in + _pitch_in_ff;
@@ -198,12 +198,8 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     }*/ 
     //pitch_thrust = pitch_out * powf(_throttle_hover / throttle_thrust, exponent_power); // for exponent July 26, 2024 uncommand
     
-    float vectexponent = 0.2f;
-    if (_vec_exponent < 0.2f ){
-        vectexponent = 0.2f;
-    }else{
-        vectexponent = _vec_exponent;
-    }
+
+    float vectexponent = _vec_exponent;
     //pitch_thrust = pitch_out * _throttle_hover / throttle_thrust; // for exponent July 26, 2024
     
     const float TOLERANCE = 1e-6;          // Till July 25, 2024 
@@ -290,8 +286,8 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     _tilt_left  = pitch_thrust - yaw_thrust;
     _tilt_right = pitch_thrust + yaw_thrust;
 
-     AP::logger().Write("CUST", "pitch_adjustment_gain", "f",
-                                        pitch_adjustment_gain);
+     //AP::logger().Write("CUST", "pitch_adjustment_gain", "f",
+                                      //  pitch_adjustment_gain);
 
     //AP::logger().Write("CUST1", "vectexponent", "f",vectexponent);
 }
@@ -324,3 +320,22 @@ void AP_MotorsTailsitter::_output_test_seq(uint8_t motor_seq, int16_t pwm)
             break;
     }
 }
+#if HAL_LOGGING_ENABLED  //structurelog
+// 10hz logging of voltage scaling and max trust
+void AP_MotorsTailsitter::Log_WriteCust()  
+{
+    const struct log_Cust pkt_cust {
+        LOG_PACKET_HEADER_INIT(LOG_CUST_MSG),
+        time_us         : AP_HAL::micros64(),
+        thr_lft         : _thrust_left,
+        thr_rght        : _thrust_right,
+        rll_thr         : roll_thrust,
+        pit_thr         : pitch_thrust,
+        yaw_thr         : yaw_thrust,
+        vexp            : _vec_exponent,
+        pit_adj         : pitch_adjustment_gain,
+        //comp            : compensation_gain,
+    };
+    AP::logger().WriteBlock(&pkt_cust, sizeof(pkt_cust));
+}
+#endif
