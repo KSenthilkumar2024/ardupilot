@@ -164,7 +164,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy
     float   pitch_out1 = 0.0f;                 // for Naman
     float   pitch_adjustment_gain = 1.0f;  // for compensating pitch
-    float   pitch_out = 0.0f;  
+   
     // apply voltage and air pressure compensation
     const float compensation_gain = thr_lin.get_compensation_gain();
     roll_thrust = (_roll_in + _roll_in_ff) * compensation_gain;
@@ -279,7 +279,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
 
     // calculate left and right throttle outputs  for compensating pitch
     _thrust_left  = throttle_thrust + (roll_thrust * 0.5f) + pitch_thrust * pitch_adjustment_gain; 
-    _thrust_right = throttle_thrust - (roll_thrust * 0.5f) - pitch_thrust * pitch_adjustment_gain;
+    _thrust_right = throttle_thrust - (roll_thrust * 0.5f) + pitch_thrust * pitch_adjustment_gain;
 
     thrust_max = MAX(_thrust_right,_thrust_left);
     thrust_min = MIN(_thrust_right,_thrust_left);
@@ -296,7 +296,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
             // in this case we throw away some roll output, it will be uneven
             // constraining the lower motor more than the upper
             // this unbalances torque, but motor torque should have significantly less control power than tilts / control surfaces
-            // so its worth keeping the higher roll control power at a minor cost to yaw
+            // so its worth keeping the hsgher roll control power at a minor cost to yaw
             limit.roll = true;
         }
         limit.throttle_lower = true;
@@ -321,7 +321,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     _tilt_right = pitch_thrust + yaw_thrust;
 
     AP::logger().Write("CUST", "pitch_adjustment_gain", "f",
-                                        pitch_adjustment_gain);
+                                        pitch_out);
 
     //AP::logger().Write("CUST1", "vectexponent", "f",vectexponent);
 }
