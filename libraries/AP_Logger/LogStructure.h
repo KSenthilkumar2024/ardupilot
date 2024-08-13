@@ -1226,13 +1226,13 @@ struct PACKED log_VER {
 // @LoggerMessage: CUST
 // @Description: Custom log writing
 // @Field: TimeUS: Time since system startup
-// @Field: THRLEFT: Boost customized gain
-// @Field: THRRIGHT: Boost customized gain
-// @Field: RLLTHR: Boost customized gain
-// @Field: PITTHR: Boost customized gain
-// @Field: YAWTHR: Boost customized gain
-// @Field: VEXPO: Boost customized gain
-// @Field: PITADJ: Boost customized gain
+// @Field: ThrLeft: Boost customized gain
+// @Field: ThrRight: Boost customized gain
+// @Field: RllThr: Boost customized gain
+// @Field: PitThr: Boost customized gain
+// @Field: YawThr: Boost customized gain
+// @Field: Vexpo: Boost customized gain
+// @Field: PitAdj: Boost customized gain
 
 // messages for all boards
 #define LOG_COMMON_STRUCTURES \
