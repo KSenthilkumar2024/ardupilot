@@ -670,7 +670,6 @@ struct PACKED log_Cust {  //structurelog
       float yaw_thr;       
       float vexp;           
       float pit_adj;        
-      float comp;
 };        
 
 struct PACKED log_VER {
@@ -1363,7 +1362,7 @@ LOG_STRUCTURE_FROM_AIS \
     { LOG_MOTBATT_MSG, sizeof(log_MotBatt), \
       "MOTB", "QfffffB",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags", "s------", "F------" , true }, \
     { LOG_CUST_MSG, sizeof(log_Cust),\
-     "CUST", "Qffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj", "s-------", "F-------" , true } //structurelog
+     "CUST", "Qffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj", "s------", "F------" , true }  //structurelog
 
 // message types 0 to 63 reserved for vehicle specific use
 
