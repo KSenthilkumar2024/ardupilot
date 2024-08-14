@@ -35,7 +35,7 @@ public:
 
     #if HAL_LOGGING_ENABLED
     // 10hz logging of voltage scaling and max trust
-    void                Log_Write() override;
+    void                Log_WriteCu();
     #endif
 
 protected:

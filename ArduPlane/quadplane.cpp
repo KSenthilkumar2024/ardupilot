@@ -704,7 +704,7 @@ bool QuadPlane::setup(void)
     }
     
     if (hal.util->available_memory() <
-        4096 + sizeof(*motors) + sizeof(*attitude_control) + sizeof(*pos_control) + sizeof(*wp_nav) + sizeof(*ahrs_view) + sizeof(*loiter_nav) + sizeof(*weathervane)) {
+        4096 + sizeof(*motors) + sizeof(*attitude_control) + sizeof(*pos_control) + sizeof(*wp_nav) + sizeof(*ahrs_view) + sizeof(*loiter_nav) + sizeof(*weathervane) + sizeof(*motcus)) { //structurelog
         AP_BoardConfig::config_error("Not enough memory for quadplane");
     }
 
@@ -1898,6 +1898,7 @@ void QuadPlane::update(void)
                 last_ctrl_log_ms = now;
                 attitude_control->control_monitor_log();
                 motors->Log_Write();
+                motcus->Log_WriteCu(); //structurelog
             }
         }
         // log QTUN at 25 Hz if motors are active, or have been active in the last quarter second

@@ -322,7 +322,7 @@ void AP_MotorsTailsitter::_output_test_seq(uint8_t motor_seq, int16_t pwm)
 }
 #if HAL_LOGGING_ENABLED  //structurelog
 // 10hz logging of voltage scaling and max trust
-void AP_MotorsTailsitter::Log_Write()  
+void AP_MotorsTailsitter::Log_WriteCu()  
 {
     const struct log_Cust pkt_cust {
         LOG_PACKET_HEADER_INIT(LOG_CUST_MSG),
