@@ -661,6 +661,17 @@ struct PACKED log_MotBatt {
     //float cust_boost;  //customLog
 };
 
+struct PACKED log_Cust {  //structurelog
+    LOG_PACKET_HEADER;
+      uint64_t  time_us;         
+      float thr_lft;       
+      float thr_rght;   
+      float rll_thr;        
+      float pit_thr;        
+      float yaw_thr;       
+      float vexp;           
+      float pit_adj;        
+};      
 struct PACKED log_VER {
     LOG_PACKET_HEADER;
     uint64_t time_us;
@@ -1212,6 +1223,17 @@ struct PACKED log_VER {
 // @Field: ThrOut: Throttle output
 // @Field: FailFlags: bit 0 motor failed, bit 1 motors balanced, should be 2 in normal flight
 
+// @LoggerMessage: CUST
+// @Description: Custom log writing
+// @Field: TimeUS: Time since system startup
+// @Field: ThrLeft: Boost customized gain
+// @Field: ThrRight: Boost customized gain
+// @Field: RllThr: Boost customized gain
+// @Field: PitThr: Boost customized gain
+// @Field: YawThr: Boost customized gain
+// @Field: Vexpo: Boost customized gain
+// @Field: PitAdj: Boost customized gain
+
 //  messages for all boards
 #define LOG_COMMON_STRUCTURES \
     { LOG_FORMAT_MSG, sizeof(log_Format), \
@@ -1338,7 +1360,10 @@ LOG_STRUCTURE_FROM_AIS \
     { LOG_VER_MSG, sizeof(log_VER), \
       "VER",   "QBHBBBBIZHB", "TimeUS,BT,BST,Maj,Min,Pat,FWT,GH,FWS,APJ,BU", "s----------", "F----------", false }, \
     { LOG_MOTBATT_MSG, sizeof(log_MotBatt), \
-      "MOTB", "QfffffB",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags", "s------", "F------" , true }
+      "MOTB", "QfffffB",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags", "s------", "F------" , true }, \
+    { LOG_CUST_MSG, sizeof(log_Cust),\
+     "CUST", "Qfffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj", "s-------", "F-------" , true }  //structurelog
+
 
 
 // message types 0 to 63 reserved for vehicle specific use
@@ -1427,6 +1452,7 @@ enum LogMessages : uint8_t {
     LOG_RCOUT2_MSG,
     LOG_RCOUT3_MSG,
     LOG_IDS_FROM_FENCE,
+    LOG_CUST_MSG,    // structurelog
 
     _LOG_LAST_MSG_
 };

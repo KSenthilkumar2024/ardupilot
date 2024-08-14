@@ -320,12 +320,29 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     _tilt_left  = pitch_thrust - yaw_thrust;
     _tilt_right = pitch_thrust + yaw_thrust;
 
-    AP::logger().Write("CUST", "pitch_adjustment_gain", "f",
-                                        pitch_out);
+    //AP::logger().Write("CUST", "pitch_adjustment_gain", "f",
+                                       // pitch_out);
 
     //AP::logger().Write("CUST1", "vectexponent", "f",vectexponent);
 }
-
+#if HAL_LOGGING_ENABLED  //structurelog
+// 10hz logging of voltage scaling and max trust
+void AP_MotorsTailsitter::Log_WriteCu()  
+{
+    const struct log_Cust pkt_cust {
+        LOG_PACKET_HEADER_INIT(LOG_CUST_MSG),
+        time_us         : AP_HAL::micros64(),
+        thr_lft         : _thrust_left,
+        thr_rght        : _thrust_right,
+        rll_thr         : roll_thrust,
+        pit_thr         : pitch_thrust,
+        yaw_thr         : yaw_thrust,
+        vexp            : _vec_exponent,
+        pit_adj         : pitch_adjustment_gain,
+    };
+    AP::logger().WriteBlock(&pkt_cust, sizeof(pkt_cust));
+}
+#endif
 // output_test_seq - spin a motor at the pwm value specified
 //  motor_seq is the motor's sequence number from 1 to the number of motors on the frame
 //  pwm value is an actual pwm value that will be output, normally in the range of 1000 ~ 2000

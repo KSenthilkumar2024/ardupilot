@@ -33,6 +33,14 @@ public:
     // Set by tailsitters using diskloading minumum outflow velocity limit
     void set_min_throttle(float val) {_external_min_throttle = val;}
 
+    #if HAL_LOGGING_ENABLED
+    // 10hz logging of voltage scaling and max trust
+    void                Log_WriteCu();       //structurelog
+    #endif
+
+    float roll_thrust; // -1..1   structurelog
+    float pitch_thrust; // -1..1   structurelog
+    float yaw_thrust; // -1..1   structurelog
 protected:
     // calculate motor outputs
     void output_armed_stabilizing() override;
@@ -46,9 +54,10 @@ protected:
     float _throttle; // 0..1
     float _tilt_left;  // -1..1
     float _tilt_right;  // -1..1
-    float _thrust_left;  // 0..1
+    float _thrust_left;  // 0..1  //structurelog
     float _thrust_right;  // 0..1
-    float   pitch_out; 
+    //float   pitch_out; 
+    float pitch_adjustment_gain; // 0..1  //structurelog
 
     // Set by tailsitters using diskloading minumum outflow velocity limit
     float _external_min_throttle;

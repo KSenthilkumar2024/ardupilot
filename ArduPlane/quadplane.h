@@ -206,6 +206,7 @@ private:
 
     // Initialise motors to allow passing it to tailsitter in its constructor
     AP_MotorsMulticopter *motors = nullptr;
+    AP_MotorsTailsitter *motcus = nullptr;   //structurelog
     const struct AP_Param::GroupInfo *motors_var_info;
 
     AC_AttitudeControl_Multi *attitude_control;
