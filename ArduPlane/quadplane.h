@@ -212,8 +212,8 @@ private:
     AC_WPNav *wp_nav;
     AC_Loiter *loiter_nav;
     
-    AP_MotorsTailsitter *motcus = nullptr;   //structurelog
-    const struct AP_Param::GroupInfo *motors_var_info; //structurelog
+    //AP_MotorsTailsitter *motcus = nullptr;   //structurelog
+    //const struct AP_Param::GroupInfo *motors_var_info; //structurelog
 
     // maximum vertical velocity the pilot may request
     AP_Float pilot_speed_z_max_up;
