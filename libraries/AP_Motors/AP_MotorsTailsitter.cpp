@@ -155,15 +155,15 @@ float fast_pow_int(float base, int exponent) {
 // calculate outputs to the motors
 void AP_MotorsTailsitter::output_armed_stabilizing()
 {
-    float   roll_thrust;                // roll thrust input value, +/- 1.0
-    float   pitch_thrust = 0.0f;               // pitch thrust input value, +/- 1.0
-    float   yaw_thrust;                 // yaw thrust input value, +/- 1.0
+    //float   roll_thrust;                // roll thrust input value, +/- 1.0
+    //float   pitch_thrust = 0.0f;               // pitch thrust input value, +/- 1.0
+    //float   yaw_thrust;                 // yaw thrust input value, +/- 1.0
     float   throttle_thrust;            // throttle thrust input value, 0.0 - 1.0
     float   thrust_max;                 // highest motor value
     float   thrust_min;                 // lowest motor value
     float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy
     float   pitch_out1 = 0.0f;                 // for Naman
-    float   pitch_adjustment_gain = 1.0f;  // for compensating pitch
+    //float   pitch_adjustment_gain = 1.0f;  // for compensating pitch
    
     // apply voltage and air pressure compensation
     const float compensation_gain = thr_lin.get_compensation_gain();
