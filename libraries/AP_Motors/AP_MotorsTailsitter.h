@@ -56,7 +56,7 @@ protected:
     float _tilt_right;  // -1..1
     float _thrust_left;  // 0..1  //structurelog
     float _thrust_right;  // 0..1
-    //float   pitch_out; 
+    float   pitch_out; //-1..1
     float pitch_adjustment_gain; // 0..1  //structurelog
 
     // Set by tailsitters using diskloading minumum outflow velocity limit
