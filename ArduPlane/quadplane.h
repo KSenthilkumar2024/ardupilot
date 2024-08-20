@@ -215,6 +215,7 @@ private:
     AC_Loiter *loiter_nav;
     
    // AP_MotorsTailsitter *motcus = nullptr;   //structurelog
+>>>>>>> 3893a88344472947b1c328ae6539469edab1f361
     
     // maximum vertical velocity the pilot may request
     AP_Float pilot_speed_z_max_up;
