@@ -1234,7 +1234,7 @@ struct PACKED log_VER {
 // @Field: YawThr: Boost customized gain
 // @Field: Vexpo: Boost customized gain
 // @Field: PitAdj: Boost customized gain
-// @Field: PitPBoo: Boost customized gain  
+// @Field: PitPBo: Boost customized gain  
 
 //  messages for all boards
 #define LOG_COMMON_STRUCTURES \
@@ -1364,7 +1364,7 @@ LOG_STRUCTURE_FROM_AIS \
     { LOG_MOTBATT_MSG, sizeof(log_MotBatt), \
       "MOTB", "QfffffB",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags", "s------", "F------" , true }, \
     { LOG_CUST_MSG, sizeof(log_Cust),\
-     "CUST", "Qffffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj,PitPBoo", "s--------", "F--------" , true }  //structurelog
+     "CUST", "Qffffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj,PitPBo", "s--------", "F--------" , true }  //structurelog
 
 
 
