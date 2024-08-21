@@ -28,7 +28,7 @@
 
 extern const AP_HAL::HAL& hal;
 
-
+extern AP_Logger *logger;
 #define SERVO_OUTPUT_RANGE  4500
 
 /*const AP_Param::GroupInfo AP_MotorsTailsitter::var_info[] = {  // for exponent July 26, 2024 uncommand
@@ -322,7 +322,7 @@ void AP_MotorsTailsitter::_output_test_seq(uint8_t motor_seq, int16_t pwm)
 }
 #if HAL_LOGGING_ENABLED  //structurelog
 // 10hz logging of voltage scaling and max trust
-void AP_MotorsTailsitter::Log_WriteCu()  
+void AP_MotorsTailsitter::Log_Write()  
 {
     const struct log_Cust pkt_cust {
         LOG_PACKET_HEADER_INIT(LOG_CUST_MSG),
