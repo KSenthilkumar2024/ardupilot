@@ -370,6 +370,7 @@ void AP_MotorsTailsitter::Log_Write()
         yaw_thr         : yaw_thrust,
         vexp            : _vec_exponent,
         pit_adj         : pitch_adjustment_gain,
+        pit_pboo       :_pitch_boost_cust_gain,
     };
     AP::logger().WriteBlock(&pkt_cust, sizeof(pkt_cust));
 }
