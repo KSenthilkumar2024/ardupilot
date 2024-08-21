@@ -1898,7 +1898,7 @@ void QuadPlane::update(void)
                 last_ctrl_log_ms = now;
                 attitude_control->control_monitor_log();
                 motors->Log_Write();
-                motors->Log_WriteCu(); //structurelog
+                //motors->Log_WriteCu(); //structurelog
             }
         }
         // log QTUN at 25 Hz if motors are active, or have been active in the last quarter second
