@@ -704,7 +704,7 @@ bool QuadPlane::setup(void)
     }
     
     if (hal.util->available_memory() <
-        4096 + sizeof(*motors) + sizeof(*attitude_control) + sizeof(*pos_control) + sizeof(*wp_nav) + sizeof(*ahrs_view) + sizeof(*loiter_nav) + sizeof(*weathervane) + sizeof(*motcus)) { //structurelog
+        4096 + sizeof(*motors) + sizeof(*attitude_control) + sizeof(*pos_control) + sizeof(*wp_nav) + sizeof(*ahrs_view) + sizeof(*loiter_nav) + sizeof(*weathervane)) { //structurelog
         AP_BoardConfig::config_error("Not enough memory for quadplane");
     }
 
