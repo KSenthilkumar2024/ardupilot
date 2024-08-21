@@ -28,7 +28,7 @@
 
 extern const AP_HAL::HAL& hal;
 
-extern AP_Logger *logger;
+//extern AP_Logger *logger;
 #define SERVO_OUTPUT_RANGE  4500
 
 /*const AP_Param::GroupInfo AP_MotorsTailsitter::var_info[] = {  // for exponent July 26, 2024 uncommand
