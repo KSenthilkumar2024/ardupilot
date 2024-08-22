@@ -58,8 +58,8 @@ protected:
     float _thrust_right;  // 0..1
     float   pitch_out; //-1..1
     float pitch_adjustment_gain; // 0..1  //structurelog
-    float _thrust_left1;  // Stock
-    float _thrust_right1;
+    float _thrust_left_stk;  // Stock
+    float _thrust_right_stk;
 
     // Set by tailsitters using diskloading minumum outflow velocity limit
     float _external_min_throttle;

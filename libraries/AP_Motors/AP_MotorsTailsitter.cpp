@@ -274,12 +274,12 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     }
 
     // calculate left and right throttle outputs
-    _thrust_left1  = throttle_thrust + roll_thrust * 0.5f;  // STOCK ARDUPILOT
-    _thrust_right1 = throttle_thrust - roll_thrust * 0.5f;
+    _thrust_left_stk  = throttle_thrust + roll_thrust * 0.5f;  // STOCK ARDUPILOT
+    _thrust_right_stk = throttle_thrust - roll_thrust * 0.5f;
 
     // calculate left and right throttle outputs  for compensating pitch
-    _thrust_left  = _thrust_left1  * pitch_adjustment_gain;  // customized thrust
-    _thrust_right = _thrust_right1 * pitch_adjustment_gain;
+    _thrust_left  = _thrust_left_stk  * pitch_adjustment_gain;  // customized thrust
+    _thrust_right = _thrust_right_stk * pitch_adjustment_gain;
 
     thrust_max = MAX(_thrust_right,_thrust_left);
     thrust_min = MIN(_thrust_right,_thrust_left);
@@ -371,8 +371,8 @@ void AP_MotorsTailsitter::Log_Write()
         vexp            : _vec_exponent,
         pit_adj         : pitch_adjustment_gain,
         pit_pboo        : _pitch_boost_cust_gain,
-        thr_lstk        : _thrust_left1,
-        thr_rstk        : _thrust_right1,
+        thr_lstk        : _thrust_left_stk,
+        thr_rstk        : _thrust_right_stk,
     };
     AP::logger().WriteBlock(&pkt_cust, sizeof(pkt_cust));
 }
