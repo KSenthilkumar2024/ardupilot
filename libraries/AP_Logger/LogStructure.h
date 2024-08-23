@@ -672,8 +672,8 @@ struct PACKED log_Cust {  //structurelog
       float vexp;           
       float pit_adj;  
       float pit_pboo;  
-      float thr_lstk;      
-      float thr_rstk;      
+      //float thr_lstk;      
+      //float thr_rstk;      
 };      
 struct PACKED log_VER {
     LOG_PACKET_HEADER;
@@ -1237,8 +1237,6 @@ struct PACKED log_VER {
 // @Field: Vexpo: Exponent term for customized 
 // @Field: PitAdj: adjustment customized gain
 // @Field: PitPBo: Boost customized gain 
-// @Field: ThLstk: Throttle left stock
-// @Field: ThRstk: Throttle right stock
 
 //  messages for all boards
 #define LOG_COMMON_STRUCTURES \
@@ -1368,7 +1366,7 @@ LOG_STRUCTURE_FROM_AIS \
     { LOG_MOTBATT_MSG, sizeof(log_MotBatt), \
       "MOTB", "QfffffB",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags", "s------", "F------" , true }, \
     { LOG_CUST_MSG, sizeof(log_Cust),\
-     "CUST", "Qffffffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj,PitPBo,ThLstk,ThRstk", "s----------", "F----------" , true }  //structurelog
+     "CUST", "Qffffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj,PitPBo", "s--------", "F--------" , true }  //structurelog
 
 
 
