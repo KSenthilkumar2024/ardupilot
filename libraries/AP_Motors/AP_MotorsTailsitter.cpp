@@ -162,7 +162,7 @@ void AP_MotorsTailsitter::output_armed_stabilizing()
     float   thrust_max;                 // highest motor value
     float   thrust_min;                 // lowest motor value
     float   thr_adj = 0.0f;             // the difference between the pilot's desired throttle and throttle_thrust_best_rpy
-    float   pitch_out1 = 0.0f;                 // for Naman
+   // float   pitch_out1 = 0.0f;                 // for Naman
     //float   pitch_adjustment_gain = 1.0f;  // for compensating pitch
    
     // apply voltage and air pressure compensation
@@ -371,7 +371,8 @@ void AP_MotorsTailsitter::Log_Write()
         vexp            : _vec_exponent,
         pit_adj         : pitch_adjustment_gain,
         pit_pboo        : _pitch_boost_cust_gain,
-        thr_lstk        : _thrust_left_stk,
+        pit_org         : pitch_out1,
+        //thr_lstk        : _thrust_left_stk,
         //thr_rstk        : _thrust_right_stk,
     };
     AP::logger().WriteBlock(&pkt_cust, sizeof(pkt_cust));

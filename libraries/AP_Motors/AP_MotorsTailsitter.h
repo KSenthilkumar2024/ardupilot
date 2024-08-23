@@ -57,6 +57,7 @@ protected:
     float _thrust_left;  // 0..1  //structurelog
     float _thrust_right;  // 0..1
     float   pitch_out; //-1..1
+    float   pitch_out1; //-1..1
     float pitch_adjustment_gain; // 0..1  //structurelog
     float _thrust_left_stk;  // Stock
     float _thrust_right_stk; //Stock
