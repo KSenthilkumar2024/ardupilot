@@ -658,6 +658,7 @@ struct PACKED log_MotBatt {
     float th_average_max;
     float th_out;
     uint8_t mot_fail_flags;
+    float pit_org; 
     //float cust_boost;  //customLog
 };
 
@@ -671,8 +672,7 @@ struct PACKED log_Cust {  //structurelog
       float yaw_thr;       
       float vexp;           
       float pit_adj;  
-      float pit_pboo; 
-      float pit_org;  
+      float pit_pboo;  
       //float thr_lstk;      
       //float thr_rstk;      
 };      
@@ -1226,6 +1226,7 @@ struct PACKED log_VER {
 // @Field: ThrAvMx: Maximum average throttle that can be used to maintain attitude control, derived from throttle mix params
 // @Field: ThrOut: Throttle output
 // @Field: FailFlags: bit 0 motor failed, bit 1 motors balanced, should be 2 in normal flight
+// @Field: PitOrg: Original pitch value
 
 // @LoggerMessage: CUST
 // @Description: Custom log writing
@@ -1238,7 +1239,6 @@ struct PACKED log_VER {
 // @Field: Vexpo: Exponent term for customized 
 // @Field: PitAdj: adjustment customized gain
 // @Field: PitPBo: Boost customized gain 
-// @Field: PitOrg: Pitch original
 
 
 //  messages for all boards
@@ -1367,9 +1367,9 @@ LOG_STRUCTURE_FROM_AIS \
     { LOG_VER_MSG, sizeof(log_VER), \
       "VER",   "QBHBBBBIZHB", "TimeUS,BT,BST,Maj,Min,Pat,FWT,GH,FWS,APJ,BU", "s----------", "F----------", false }, \
     { LOG_MOTBATT_MSG, sizeof(log_MotBatt), \
-      "MOTB", "QfffffB",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags", "s------", "F------" , true }, \
+      "MOTB", "QfffffBf",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags,PitOrg", "s-------", "F-------" , true }, \
     { LOG_CUST_MSG, sizeof(log_Cust),\
-     "CUST", "Qfffffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj,PitPBo,PitOrg", "s---------", "F---------" , false }  //structurelog
+     "CUST", "Qffffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj,PitPBo", "s--------", "F--------" , false }  //structurelog
 
 
 
