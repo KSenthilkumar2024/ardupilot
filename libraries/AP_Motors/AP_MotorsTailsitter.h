@@ -38,9 +38,9 @@ public:
     void                Log_Write() override;       //structurelog
     #endif*/
 
-    float roll_thrust; // -1..1   structurelog
+   /* float roll_thrust; // -1..1   structurelog
     float pitch_thrust; // -1..1   structurelog
-    float yaw_thrust; // -1..1   structurelog
+    float yaw_thrust; // -1..1   structurelog*/
 protected:
     // calculate motor outputs
     void output_armed_stabilizing() override;

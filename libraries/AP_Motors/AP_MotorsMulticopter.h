@@ -110,6 +110,10 @@ public:
     // var_info for holding Parameter information
     static const struct AP_Param::GroupInfo        var_info[];
 
+    float roll_thrust; // -1..1   structurelog
+    float pitch_thrust; // -1..1   structurelog
+    float yaw_thrust; // -1..1   structurelog
+
 protected:
 
     // run spool logic
