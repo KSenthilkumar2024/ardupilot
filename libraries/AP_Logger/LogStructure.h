@@ -658,16 +658,9 @@ struct PACKED log_MotBatt {
     float th_average_max;
     float th_out;
     uint8_t mot_fail_flags;
-    float thr_lft;       
-    float thr_rght;       
-    float vexp;           
-    float pit_adj;  
-    float pit_pboo;  
-    float pit_org; 
-    //float cust_boost;  //customLog
 };
 
-/*struct PACKED log_Cust {  //structurelog
+struct PACKED log_Cust {  //structurelog
     LOG_PACKET_HEADER;
       uint64_t  time_us;         
       float thr_lft;       
@@ -678,9 +671,8 @@ struct PACKED log_MotBatt {
       float vexp;           
       float pit_adj;  
       float pit_pboo;  
-      //float thr_lstk;      
-      //float thr_rstk;      
-};  */    
+     
+};  
 struct PACKED log_VER {
     LOG_PACKET_HEADER;
     uint64_t time_us;
@@ -1231,14 +1223,9 @@ struct PACKED log_VER {
 // @Field: ThrAvMx: Maximum average throttle that can be used to maintain attitude control, derived from throttle mix params
 // @Field: ThrOut: Throttle output
 // @Field: FailFlags: bit 0 motor failed, bit 1 motors balanced, should be 2 in normal flight
-// @Field: ThrLeft: Throttle left for motor
-// @Field: ThrRight: Throttle right
-// @Field: Vexpo: Exponent term for customized 
-// @Field: PitAdj: adjustment customized gain
-// @Field: PitPBo: Boost customized gain 
-// @Field: PitOrg: Original pitch value
 
-/*// @LoggerMessage: CUST
+
+// @LoggerMessage: CUST
 // @Description: Custom log writing
 // @Field: TimeUS: Time since system startup
 // @Field: ThrLeft: Throttle left for motor
@@ -1248,7 +1235,7 @@ struct PACKED log_VER {
 // @Field: YawThr: Yaw thrust
 // @Field: Vexpo: Exponent term for customized 
 // @Field: PitAdj: adjustment customized gain
-// @Field: PitPBo: Boost customized gain */
+// @Field: PitPBo: Boost customized gain 
 
 
 //  messages for all boards
@@ -1377,9 +1364,9 @@ LOG_STRUCTURE_FROM_AIS \
     { LOG_VER_MSG, sizeof(log_VER), \
       "VER",   "QBHBBBBIZHB", "TimeUS,BT,BST,Maj,Min,Pat,FWT,GH,FWS,APJ,BU", "s----------", "F----------", false }, \
     { LOG_MOTBATT_MSG, sizeof(log_MotBatt), \
-      "MOTB", "QfffffBffffff",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags,ThrLeft,ThrRight,Vexpo,PitAdj,PitPBo,PitOrg", "s------------", "F------------" , true }
-    /*{ LOG_CUST_MSG, sizeof(log_Cust),\
-     "CUST", "Qffffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj,PitPBo", "s--------", "F--------" , false }  //structurelog*/
+      "MOTB", "QfffffB",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags", "s------", "F------" , true },\
+    { LOG_CUST_MSG, sizeof(log_Cust),\
+     "CUST", "Qffffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj,PitPBo", "s--------", "F--------" , false }  //structurelog
 
 
 

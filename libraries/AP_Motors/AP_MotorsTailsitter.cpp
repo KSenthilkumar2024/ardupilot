@@ -355,7 +355,7 @@ void AP_MotorsTailsitter::_output_test_seq(uint8_t motor_seq, int16_t pwm)
     }
 }
 
-/*#if HAL_LOGGING_ENABLED  //structurelog
+#if HAL_LOGGING_ENABLED  //structurelog
 // 10hz logging of voltage scaling and max trust
 //void AP_MotorsTailsitter::Log_WriteCu()  
 void AP_MotorsTailsitter::Log_Write() 
@@ -377,4 +377,4 @@ void AP_MotorsTailsitter::Log_Write()
     };
     AP::logger().WriteBlock(&pkt_cust, sizeof(pkt_cust));
 }
-#endif*/
+#endif
