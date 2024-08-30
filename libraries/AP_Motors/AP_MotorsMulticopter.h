@@ -110,10 +110,6 @@ public:
     // var_info for holding Parameter information
     static const struct AP_Param::GroupInfo        var_info[];
 
-    float roll_thrust; // -1..1   structurelog
-    float pitch_thrust; // -1..1   structurelog
-    float yaw_thrust; // -1..1   structurelog
-
 protected:
 
     // run spool logic
@@ -210,6 +206,9 @@ protected:
     float _thrust_left_stk;  // Stock
     float _thrust_right_stk; //Stock
     float   pitch_out1; //-1..1
+    float roll_thrust; // -1..1   structurelog
+    float pitch_thrust; // -1..1   structurelog
+    float yaw_thrust; // -1..1   structurelog
     // vehicle supplied callback for thrust compensation. Used for tiltrotors and tiltwings
     thrust_compensation_fn_t _thrust_compensation_callback;
 
