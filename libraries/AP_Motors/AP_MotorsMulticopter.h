@@ -198,6 +198,13 @@ protected:
     float               _throttle_limit;        // ratio of throttle limit between hover and maximum
     float               _throttle_thrust_max;   // the maximum allowed throttle thrust 0.0 to 1.0 in the range throttle_min to throttle_max
     float               _disarm_safe_timer;     // Timer for the esc when transitioning between zero pwm to minimum
+    float _thrust_left;  // 0..1  //structurelog
+    float _thrust_right;  // 0..1
+    float   pitch_out; //-1..1
+    //float   pitch_out1; //-1..1
+    float pitch_adjustment_gain; // 0..1  //structurelog
+    float _thrust_left_stk;  // Stock
+    float _thrust_right_stk; //Stock
     float   pitch_out1; //-1..1
     // vehicle supplied callback for thrust compensation. Used for tiltrotors and tiltwings
     thrust_compensation_fn_t _thrust_compensation_callback;
