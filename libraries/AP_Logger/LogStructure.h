@@ -659,10 +659,7 @@ struct PACKED log_MotBatt {
     float th_out;
     uint8_t mot_fail_flags;
     float thr_lft;       
-    float thr_rght;   
-    float rll_thr;        
-    float pit_thr;        
-    float yaw_thr;       
+    float thr_rght;       
     float vexp;           
     float pit_adj;  
     float pit_pboo;  
@@ -1236,9 +1233,6 @@ struct PACKED log_VER {
 // @Field: FailFlags: bit 0 motor failed, bit 1 motors balanced, should be 2 in normal flight
 // @Field: ThrLeft: Throttle left for motor
 // @Field: ThrRight: Throttle right
-// @Field: RllThr: Roll Thrust
-// @Field: PitThr: Pitch Thrust
-// @Field: YawThr: Yaw thrust
 // @Field: Vexpo: Exponent term for customized 
 // @Field: PitAdj: adjustment customized gain
 // @Field: PitPBo: Boost customized gain 
@@ -1383,7 +1377,7 @@ LOG_STRUCTURE_FROM_AIS \
     { LOG_VER_MSG, sizeof(log_VER), \
       "VER",   "QBHBBBBIZHB", "TimeUS,BT,BST,Maj,Min,Pat,FWT,GH,FWS,APJ,BU", "s----------", "F----------", false }, \
     { LOG_MOTBATT_MSG, sizeof(log_MotBatt), \
-      "MOTB", "QfffffBfffffffff",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj,PitPBo,PitOrg", "s---------------", "F---------------" , true }
+      "MOTB", "QfffffBffffff",  "TimeUS,LiftMax,BatVolt,ThLimit,ThrAvMx,ThrOut,FailFlags,ThrLeft,ThrRight,Vexpo,PitAdj,PitPBo,PitOrg", "s------------", "F------------" , true }
     /*{ LOG_CUST_MSG, sizeof(log_Cust),\
      "CUST", "Qffffffff", "TimeUS,ThrLeft,ThrRight,RllThr,PitThr,YawThr,Vexpo,PitAdj,PitPBo", "s--------", "F--------" , false }  //structurelog*/
 
